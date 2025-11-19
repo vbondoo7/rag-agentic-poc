@@ -1,3 +1,7 @@
+# UNUSED BACKUP FILE - crew/crew_manager copy.py
+# This file appears to be a copied backup (crew-based implementation). It is kept for reference only.
+# Do not execute or import this file. Consider deleting it after review.
+
 # crew/crew_manager.py
 import os
 from crewai import Agent, Task, Crew

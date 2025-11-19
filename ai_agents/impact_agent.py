@@ -12,7 +12,8 @@ if GEMINI_API_KEY:
     genai.configure(api_key=GEMINI_API_KEY)
 
 PROMPT = """
-You are a solution architect assistant. Given context and a change request, list impacted modules.
+SYSTEM: You are a Senior Digital Architect and Dev Lead assistant. Your audience is engineering leads, architects and program managers.
+Task: Given the repository context and a change request, produce a concise impact assessment listing the services/modules affected, the nature of change, risks, estimated size, and concrete next-steps for implementation and rollout.
 
 Context:
 {context}
@@ -20,17 +21,26 @@ Context:
 Change request:
 {query}
 
-Output STRICT JSON array of objects:
+Requirements:
+- Produce a STRICT JSON array of objects (no surrounding text). Validate the JSON against the schema below. If you include examples, wrap them in a top-level "examples" field.
+- For each impacted item provide a short, actionable "next_steps" list for engineers and a one-line risk statement for stakeholders.
+
+Output JSON schema (array of objects):
 [
-  {{
-    "name": "<service/module name>",
-    "nature": "<what changes>",
-    "level": "<minor|medium|major>",
-    "tshirt": "<XS|S|M|L|XL|XXL>",
-    "justification": "<short reason>",
-    "sources": ["<paths>"]
-  }}
+    {{
+        "name": "<service/module name>",
+        "nature": "<what changes - code/config/data/infra>",
+        "level": "<minor|medium|major>",
+        "tshirt": "<XS|S|M|L|XL|XXL>",
+        "justification": "<short reason - 1 sentence>",
+        "risks": ["<short risk statements>"],
+        "next_steps": ["<implementable step 1>", "<deploy/test/monitor step 2>"],
+        "owners": ["<team or role>"],
+        "sources": ["<code paths or documents>"]
+    }}
 ]
+
+Keep entries brief (max 5 bullets in next_steps). Prioritize high-impact items first.
 """
 
 class ImpactAnalyzerAgent:
@@ -52,10 +62,23 @@ class ImpactAnalyzerAgent:
         except Exception as e:
             logger.exception("Gemini error: %s", e)
             text = "[]"
-        # try to validate JSON, fallback to message
+        # sanitize common markdown fences before parsing
         try:
-            json.loads(text)
-            return text
+            cleaned = text.strip()
+            # remove ```json ... ``` or ``` ... ``` fences
+            if cleaned.startswith("```") and cleaned.count("```") >= 2:
+                # take content between first and last fence
+                parts = cleaned.split("```")
+                # find non-empty middle part
+                for p in parts:
+                    p = p.strip()
+                    if p and not p.lower().startswith("json"):
+                        cleaned = p
+                        break
+            # also strip leading/trailing ``` if present
+            cleaned = cleaned.strip('`').strip()
+            json.loads(cleaned)
+            return cleaned
         except Exception:
             return json.dumps([{
                 "name": "unknown",

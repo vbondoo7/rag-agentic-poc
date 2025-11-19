@@ -13,7 +13,8 @@ if GEMINI_API_KEY:
     genai.configure(api_key=GEMINI_API_KEY)
 
 PROMPT = """
-You are an expert software architect. Use the context and relevant all files in the main repo and service specific folders to explain the module/service.
+SYSTEM: You are an expert Software Architect and Senior Dev Lead advisor. Your audience includes architects, tech leads and engineering managers.
+Task: Using the supplied context, explain the relevant module/service and answer the user's query with practical, prioritized actions and concerns.
 
 Context:
 {context}
@@ -21,16 +22,12 @@ Context:
 User query:
 {query}
 
-Return bullet points covering only if there has been a very generic ask from user for a particular service/module/component, including:
-- System/component purpose
-- Major relationships
-- Key challenges
-- Any gotchas
-- Improvement areas - tech debt, architecture, code quality, performance, security etc. with details
+Behavior / output guidance:
+- If the user asks generically about a module/service, return concise bullet points covering: purpose, major relationships, key challenges, known gotchas, and prioritized improvement areas (tech debt, architecture, performance, security). Limit to 6 bullets.
+- If the user asks a specific question (e.g., how to implement X, where to change code, migration steps), focus strictly on the requested topic and provide step-by-step actionable guidance for engineers (code locations, tests, rollout notes).
+- Where relevant, include one-line recommendations for monitoring/metrics and a short rollback strategy.
 
-Otherwise focus on the user's specific query and DO NOT Include the above aspects in your response, be very specific while responding.
-
-Return as plain text.
+Return as plain text (human-readable), with short code-path references where possible.
 """
 
 class UnderstandingAgent:

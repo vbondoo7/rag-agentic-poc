@@ -18,6 +18,12 @@ sentence-transformers
 # JSON validation & utilities
 pydantic
 
+# Testing
+pytest
+
+# UI / logging
+rich
+
 # Optional file loaders / parsing
 tqdm
 unstructured[local-inference]

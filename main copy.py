@@ -1,3 +1,7 @@
+# UNUSED BACKUP FILE - main copy.py
+# This file appears to be a development backup. It is kept for reference only.
+# Do not execute or import this file. Consider deleting it after review.
+
 # main.py
 import os
 import streamlit as st

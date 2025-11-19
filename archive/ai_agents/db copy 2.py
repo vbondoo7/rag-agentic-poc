@@ -1,6 +1,5 @@
-# UNUSED BACKUP FILE - ai_agents/db copy 2.py
-# This file appears to be a copied backup. It is kept for reference only.
-# Do not execute or import this file. Consider deleting it after review.
+# UNUSED BACKUP FILE - ai_agents/db copy 2.py (moved to archive)
+# Original content preserved for review.
 
 # ai_agents/db.py
 import sqlite3
