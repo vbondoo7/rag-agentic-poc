@@ -1,0 +1,9 @@
+{
+  "file": "./sample_codebase/microservices-demo/docs/deploystack.md",
+  "language": "md",
+  "short_description": "Deploy Online Boutique with DeployStack",
+  "imports": [],
+  "external_calls": [],
+  "functions": [],
+  "classes": []
+}

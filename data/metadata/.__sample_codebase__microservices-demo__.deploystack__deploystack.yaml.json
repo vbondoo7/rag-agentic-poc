@@ -1,0 +1,9 @@
+{
+  "file": "./sample_codebase/microservices-demo/.deploystack/deploystack.yaml",
+  "language": "yaml",
+  "short_description": "The fields inside this deploystack.yaml file are documented in https://github.com/GoogleCloudPlatform/deploystack.",
+  "imports": [],
+  "external_calls": [],
+  "functions": [],
+  "classes": []
+}

@@ -1,0 +1,18 @@
+{
+  "file": "./sample_codebase/microservices-demo/src/emailservice/email_client.py",
+  "language": "py",
+  "short_description": "!/usr/bin/python",
+  "imports": [
+    "logger",
+    "grpc",
+    "demo_pb2",
+    "demo_pb2_grpc"
+  ],
+  "external_calls": [
+    "grpc"
+  ],
+  "functions": [
+    "send_confirmation_email"
+  ],
+  "classes": []
+}

@@ -1,0 +1,36 @@
+{
+  "file": "./sample_codebase/microservices-demo/src/recommendationservice/recommendation_server.py",
+  "language": "py",
+  "short_description": "!/usr/bin/python",
+  "imports": [
+    "os",
+    "time",
+    "opentelemetry.instrumentation.grpc",
+    "logger",
+    "google.auth.exceptions",
+    "grpc",
+    "opentelemetry.sdk.trace.export",
+    "demo_pb2",
+    "concurrent",
+    "opentelemetry.sdk.trace",
+    "demo_pb2_grpc",
+    "opentelemetry.exporter.otlp.proto.grpc.trace_exporter",
+    "googlecloudprofiler",
+    "grpc_health.v1",
+    "random",
+    "opentelemetry",
+    "traceback"
+  ],
+  "external_calls": [
+    "grpc"
+  ],
+  "functions": [
+    "initStackdriverProfiling",
+    "ListRecommendations",
+    "Check",
+    "Watch"
+  ],
+  "classes": [
+    "RecommendationService"
+  ]
+}

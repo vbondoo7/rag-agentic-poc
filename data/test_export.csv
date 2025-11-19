@@ -1,0 +1,3 @@
+id,chat_id,sender,agent_name,intent,message,response_json,timestamp
+1,d66fcbd0-bd1f-4fff-aafc-a6a71afabc17,user,,understanding,What microservices exist?,,2025-10-28T07:25:50.239974Z
+2,d66fcbd0-bd1f-4fff-aafc-a6a71afabc17,assistant,understanding,understanding,Found payment-service and auth-service,"{""summary"": ""2 services found""}",2025-10-28T07:25:50.244581Z

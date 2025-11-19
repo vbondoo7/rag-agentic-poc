@@ -1,0 +1,11 @@
+{
+  "file": "./sample_codebase/microservices-demo/helm-chart/README.md",
+  "language": "md",
+  "short_description": "Helm chart for Online Boutique",
+  "imports": [],
+  "external_calls": [
+    "redis"
+  ],
+  "functions": [],
+  "classes": []
+}

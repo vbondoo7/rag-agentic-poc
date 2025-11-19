@@ -1,0 +1,22 @@
+app:
+  name: "RAG-Agentic Code Analyst"
+  sample_codebase_dir: "sample_codebase/microservices-demo"
+  metadata_dir: "metadata"
+  persist_dir: "chroma_db"
+  db_path: "data/chats.db"
+
+llm_mapping:
+  default: "gemini-2.5-flash"
+  code_agent: "gemini-2.5-flash"
+  requirement_agent: "gemini-2.5-flash"
+  impact_agent: "gemini-2.5-flash"
+  understanding_agent: "gemini-2.5-flash"
+  blueprint_agent: "gemini-2.5-flash"
+  doc_agent: "gemini-2.5-flash"
+
+ui:
+  title: "Agentic Architect AI — RAG + Gemini"
+  description: "Ask about codebase, functional flows, impact of changes, and generate docs."
+
+logging:
+  level: INFO

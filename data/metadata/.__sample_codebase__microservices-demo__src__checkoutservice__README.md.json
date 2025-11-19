@@ -1,0 +1,9 @@
+{
+  "file": "./sample_codebase/microservices-demo/src/checkoutservice/README.md",
+  "language": "md",
+  "short_description": "checkoutservice",
+  "imports": [],
+  "external_calls": [],
+  "functions": [],
+  "classes": []
+}

@@ -1,0 +1,13 @@
+{
+  "file": "./sample_codebase/microservices-demo/src/currencyservice/client.js",
+  "language": "js",
+  "short_description": "",
+  "imports": [],
+  "external_calls": [
+    "grpc"
+  ],
+  "functions": [
+    "_moneyToString"
+  ],
+  "classes": []
+}

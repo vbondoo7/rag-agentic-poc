@@ -1,0 +1,18 @@
+{
+  "file": "./sample_codebase/microservices-demo/src/emailservice/logger.py",
+  "language": "py",
+  "short_description": "!/usr/bin/python",
+  "imports": [
+    "sys",
+    "pythonjsonlogger",
+    "logging"
+  ],
+  "external_calls": [],
+  "functions": [
+    "add_fields",
+    "getJSONLogger"
+  ],
+  "classes": [
+    "CustomJsonFormatter"
+  ]
+}

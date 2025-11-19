@@ -1,0 +1,9 @@
+{
+  "file": "./sample_codebase/microservices-demo/kubernetes-manifests/README.md",
+  "language": "md",
+  "short_description": "./kubernetes-manifests",
+  "imports": [],
+  "external_calls": [],
+  "functions": [],
+  "classes": []
+}

@@ -1,0 +1,9 @@
+{
+  "file": "./sample_codebase/microservices-demo/kustomize/base/loadgenerator.yaml",
+  "language": "yaml",
+  "short_description": "Copyright 2018 Google LLC",
+  "imports": [],
+  "external_calls": [],
+  "functions": [],
+  "classes": []
+}

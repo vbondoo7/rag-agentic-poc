@@ -1,0 +1,9 @@
+{
+  "file": "./sample_codebase/microservices-demo/.github/workflows/terraform-validate-ci.yaml",
+  "language": "yaml",
+  "short_description": "Copyright 2020 Google LLC",
+  "imports": [],
+  "external_calls": [],
+  "functions": [],
+  "classes": []
+}

@@ -1,0 +1,33 @@
+# config.yaml - central config
+app:
+  repo_default: "./sample_codebase/microservices-demo"
+  metadata_dir: "data/metadata"
+  embeddings_dir: "data/embeddings"
+  persist_dir: "chroma_db"
+
+llm_defaults:
+  provider: "gemini"
+  model: "gemini-2.5-flash"
+  temperature: 0.2
+  max_tokens: 1024
+
+# Per-agent mapping - change model or provider per agent if needed
+agents:
+  ArchitectAgent:
+    model: "gemini-2.5-flash"
+    temperature: 0.2
+  ImpactAgent:
+    model: "gemini-2.5-flash"
+    temperature: 0.2
+  BlueprintAgent:
+    model: "gemini-2.5-flash"
+    temperature: 0.25
+  UnderstandingAgent:
+    model: "gemini-2.5-flash"
+    temperature: 0.15
+
+# vector store / indexing
+vector:
+  chunk_size: 800
+  chunk_overlap: 120
+  top_k: 6

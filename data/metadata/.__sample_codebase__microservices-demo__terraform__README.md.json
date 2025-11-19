@@ -1,0 +1,11 @@
+{
+  "file": "./sample_codebase/microservices-demo/terraform/README.md",
+  "language": "md",
+  "short_description": "Licensed under the Apache License, Version 2.0 (the \"License\");",
+  "imports": [],
+  "external_calls": [
+    "redis"
+  ],
+  "functions": [],
+  "classes": []
+}

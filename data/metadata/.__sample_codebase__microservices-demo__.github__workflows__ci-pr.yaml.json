@@ -1,0 +1,11 @@
+{
+  "file": "./sample_codebase/microservices-demo/.github/workflows/ci-pr.yaml",
+  "language": "yaml",
+  "short_description": "Copyright 2020 Google LLC",
+  "imports": [],
+  "external_calls": [
+    "redis"
+  ],
+  "functions": [],
+  "classes": []
+}

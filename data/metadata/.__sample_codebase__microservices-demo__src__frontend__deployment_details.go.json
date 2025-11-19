@@ -1,0 +1,13 @@
+{
+  "file": "./sample_codebase/microservices-demo/src/frontend/deployment_details.go",
+  "language": "go",
+  "short_description": "\"cloud.google.com/go/compute/metadata\"",
+  "imports": [
+    "main"
+  ],
+  "external_calls": [
+    "http"
+  ],
+  "functions": [],
+  "classes": []
+}

@@ -1,0 +1,9 @@
+{
+  "file": "./sample_codebase/microservices-demo/src/adservice/README.md",
+  "language": "md",
+  "short_description": "Ad Service",
+  "imports": [],
+  "external_calls": [],
+  "functions": [],
+  "classes": []
+}

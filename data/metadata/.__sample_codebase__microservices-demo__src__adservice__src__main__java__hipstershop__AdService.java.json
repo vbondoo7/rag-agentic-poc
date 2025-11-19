@@ -1,0 +1,34 @@
+{
+  "file": "./sample_codebase/microservices-demo/src/adservice/src/main/java/hipstershop/AdService.java",
+  "language": "java",
+  "short_description": "",
+  "imports": [
+    "io.grpc.stub.StreamObserver",
+    "java.util.concurrent.TimeUnit",
+    "io.grpc.services.",
+    "org.apache.logging.log4j.LogManager",
+    "io.grpc.StatusRuntimeException",
+    "java.util.List",
+    "hipstershop.Demo.AdRequest",
+    "org.apache.logging.log4j.Logger",
+    "java.io.IOException",
+    "io.grpc.Server",
+    "com.google.common.collect.Iterables",
+    "java.util.Collection",
+    "io.grpc.health.v1.HealthCheckResponse.ServingStatus",
+    "com.google.common.collect.ImmutableListMultimap",
+    "com.google.common.collect.ImmutableMap",
+    "java.util.Random",
+    "org.apache.logging.log4j.Level",
+    "java.util.ArrayList",
+    "hipstershop.Demo.Ad",
+    "hipstershop",
+    "hipstershop.Demo.AdResponse",
+    "io.grpc.ServerBuilder"
+  ],
+  "external_calls": [
+    "grpc"
+  ],
+  "functions": [],
+  "classes": []
+}

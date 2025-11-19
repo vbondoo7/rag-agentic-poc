@@ -1,0 +1,11 @@
+{
+  "file": "./sample_codebase/microservices-demo/src/currencyservice/package.json",
+  "language": "json",
+  "short_description": "\"name\": \"grpc-currency-service\",",
+  "imports": [],
+  "external_calls": [
+    "grpc"
+  ],
+  "functions": [],
+  "classes": []
+}

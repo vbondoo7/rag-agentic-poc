@@ -1,0 +1,12 @@
+{
+  "file": "./sample_codebase/microservices-demo/src/recommendationservice/demo_pb2.py",
+  "language": "py",
+  "short_description": "!/usr/bin/python",
+  "imports": [
+    "google.protobuf",
+    "google.protobuf.internal"
+  ],
+  "external_calls": [],
+  "functions": [],
+  "classes": []
+}

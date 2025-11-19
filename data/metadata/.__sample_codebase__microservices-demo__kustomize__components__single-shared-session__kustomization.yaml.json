@@ -1,0 +1,9 @@
+{
+  "file": "./sample_codebase/microservices-demo/kustomize/components/single-shared-session/kustomization.yaml",
+  "language": "yaml",
+  "short_description": "Copyright 2022 Google LLC",
+  "imports": [],
+  "external_calls": [],
+  "functions": [],
+  "classes": []
+}

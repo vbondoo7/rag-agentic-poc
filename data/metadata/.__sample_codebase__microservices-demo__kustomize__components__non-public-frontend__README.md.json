@@ -1,0 +1,9 @@
+{
+  "file": "./sample_codebase/microservices-demo/kustomize/components/non-public-frontend/README.md",
+  "language": "md",
+  "short_description": "Remove the public exposure of Online Boutique's frontend",
+  "imports": [],
+  "external_calls": [],
+  "functions": [],
+  "classes": []
+}

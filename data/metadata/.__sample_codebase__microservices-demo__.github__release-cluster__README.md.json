@@ -1,0 +1,9 @@
+{
+  "file": "./sample_codebase/microservices-demo/.github/release-cluster/README.md",
+  "language": "md",
+  "short_description": "cymbal-shops.retail.cymbal.dev manifests",
+  "imports": [],
+  "external_calls": [],
+  "functions": [],
+  "classes": []
+}

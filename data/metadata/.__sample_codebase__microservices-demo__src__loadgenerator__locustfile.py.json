@@ -1,0 +1,27 @@
+{
+  "file": "./sample_codebase/microservices-demo/src/loadgenerator/locustfile.py",
+  "language": "py",
+  "short_description": "!/usr/bin/python",
+  "imports": [
+    "locust",
+    "datetime",
+    "random",
+    "faker"
+  ],
+  "external_calls": [],
+  "functions": [
+    "index",
+    "setCurrency",
+    "browseProduct",
+    "viewCart",
+    "addToCart",
+    "empty_cart",
+    "checkout",
+    "logout",
+    "on_start"
+  ],
+  "classes": [
+    "UserBehavior",
+    "WebsiteUser"
+  ]
+}

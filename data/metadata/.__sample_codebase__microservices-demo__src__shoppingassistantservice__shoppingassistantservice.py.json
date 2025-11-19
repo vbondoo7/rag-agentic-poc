@@ -1,0 +1,20 @@
+{
+  "file": "./sample_codebase/microservices-demo/src/shoppingassistantservice/shoppingassistantservice.py",
+  "language": "py",
+  "short_description": "!/usr/bin/python",
+  "imports": [
+    "os",
+    "google.cloud",
+    "urllib.parse",
+    "langchain_google_genai",
+    "flask",
+    "langchain_google_alloydb_pg",
+    "langchain_core.messages"
+  ],
+  "external_calls": [],
+  "functions": [
+    "create_app",
+    "talkToGemini"
+  ],
+  "classes": []
+}

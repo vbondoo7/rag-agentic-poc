@@ -1,0 +1,11 @@
+{
+  "file": "./sample_codebase/microservices-demo/kustomize/README.md",
+  "language": "md",
+  "short_description": "Use Online Boutique with Kustomize",
+  "imports": [],
+  "external_calls": [
+    "redis"
+  ],
+  "functions": [],
+  "classes": []
+}

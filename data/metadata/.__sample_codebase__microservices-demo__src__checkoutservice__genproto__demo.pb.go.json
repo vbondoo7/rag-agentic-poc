@@ -1,0 +1,11 @@
+{
+  "file": "./sample_codebase/microservices-demo/src/checkoutservice/genproto/demo.pb.go",
+  "language": "go",
+  "short_description": "Copyright 2020 Google LLC",
+  "imports": [
+    "hipstershop"
+  ],
+  "external_calls": [],
+  "functions": [],
+  "classes": []
+}

@@ -1,0 +1,11 @@
+{
+  "file": "./sample_codebase/microservices-demo/src/paymentservice/charge.js",
+  "language": "js",
+  "short_description": "Copyright 2018 Google LLC",
+  "imports": [],
+  "external_calls": [],
+  "functions": [
+    "charge"
+  ],
+  "classes": []
+}

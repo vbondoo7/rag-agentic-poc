@@ -1,0 +1,17 @@
+{
+  "file": "./sample_codebase/microservices-demo/src/recommendationservice/client.py",
+  "language": "py",
+  "short_description": "!/usr/bin/python",
+  "imports": [
+    "logger",
+    "grpc",
+    "demo_pb2_grpc",
+    "sys",
+    "demo_pb2"
+  ],
+  "external_calls": [
+    "grpc"
+  ],
+  "functions": [],
+  "classes": []
+}

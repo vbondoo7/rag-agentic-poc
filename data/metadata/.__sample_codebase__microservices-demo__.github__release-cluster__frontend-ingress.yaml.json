@@ -1,0 +1,9 @@
+{
+  "file": "./sample_codebase/microservices-demo/.github/release-cluster/frontend-ingress.yaml",
+  "language": "yaml",
+  "short_description": "Copyright 2024 Google LLC",
+  "imports": [],
+  "external_calls": [],
+  "functions": [],
+  "classes": []
+}

@@ -1,0 +1,11 @@
+{
+  "file": "./sample_codebase/microservices-demo/src/shippingservice/shippingservice_test.go",
+  "language": "go",
+  "short_description": "Copyright 2018 Google LLC",
+  "imports": [
+    "main"
+  ],
+  "external_calls": [],
+  "functions": [],
+  "classes": []
+}

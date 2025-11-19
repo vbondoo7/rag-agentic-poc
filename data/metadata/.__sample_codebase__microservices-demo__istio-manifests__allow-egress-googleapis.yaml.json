@@ -1,0 +1,9 @@
+{
+  "file": "./sample_codebase/microservices-demo/istio-manifests/allow-egress-googleapis.yaml",
+  "language": "yaml",
+  "short_description": "Copyright 2018 Google LLC",
+  "imports": [],
+  "external_calls": [],
+  "functions": [],
+  "classes": []
+}

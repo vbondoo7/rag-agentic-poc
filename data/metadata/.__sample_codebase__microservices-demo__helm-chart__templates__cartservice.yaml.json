@@ -1,0 +1,12 @@
+{
+  "file": "./sample_codebase/microservices-demo/helm-chart/templates/cartservice.yaml",
+  "language": "yaml",
+  "short_description": "Copyright 2024 Google LLC",
+  "imports": [],
+  "external_calls": [
+    "grpc",
+    "redis"
+  ],
+  "functions": [],
+  "classes": []
+}

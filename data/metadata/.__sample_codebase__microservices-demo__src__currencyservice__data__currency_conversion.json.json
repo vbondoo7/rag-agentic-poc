@@ -1,0 +1,9 @@
+{
+  "file": "./sample_codebase/microservices-demo/src/currencyservice/data/currency_conversion.json",
+  "language": "json",
+  "short_description": "",
+  "imports": [],
+  "external_calls": [],
+  "functions": [],
+  "classes": []
+}

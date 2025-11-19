@@ -1,0 +1,19 @@
+{
+  "file": "./sample_codebase/microservices-demo/src/currencyservice/server.js",
+  "language": "js",
+  "short_description": "",
+  "imports": [],
+  "external_calls": [
+    "grpc"
+  ],
+  "functions": [
+    "_loadProto",
+    "_getCurrencyData",
+    "_carry",
+    "getSupportedCurrencies",
+    "convert",
+    "check",
+    "main"
+  ],
+  "classes": []
+}

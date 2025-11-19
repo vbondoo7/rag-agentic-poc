@@ -1,0 +1,9 @@
+{
+  "file": "./sample_codebase/microservices-demo/.github/auto-approve.yml",
+  "language": "yml",
+  "short_description": "Copyright 2023 Google LLC",
+  "imports": [],
+  "external_calls": [],
+  "functions": [],
+  "classes": []
+}

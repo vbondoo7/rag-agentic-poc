@@ -1,0 +1,24 @@
+{
+  "file": "./sample_codebase/microservices-demo/src/adservice/src/main/java/hipstershop/AdServiceClient.java",
+  "language": "java",
+  "short_description": "",
+  "imports": [
+    "javax.annotation.Nullable",
+    "org.apache.logging.log4j.LogManager",
+    "io.grpc.ManagedChannelBuilder",
+    "io.grpc.StatusRuntimeException",
+    "java.util.concurrent.TimeUnit",
+    "org.apache.logging.log4j.Level",
+    "hipstershop.Demo.AdRequest",
+    "org.apache.logging.log4j.Logger",
+    "hipstershop.Demo.Ad",
+    "hipstershop",
+    "io.grpc.ManagedChannel",
+    "hipstershop.Demo.AdResponse"
+  ],
+  "external_calls": [
+    "grpc"
+  ],
+  "functions": [],
+  "classes": []
+}

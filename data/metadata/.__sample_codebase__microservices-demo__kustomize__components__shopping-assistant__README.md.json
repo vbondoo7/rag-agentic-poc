@@ -1,0 +1,9 @@
+{
+  "file": "./sample_codebase/microservices-demo/kustomize/components/shopping-assistant/README.md",
+  "language": "md",
+  "short_description": "Shopping Assistant with RAG & AlloyDB",
+  "imports": [],
+  "external_calls": [],
+  "functions": [],
+  "classes": []
+}

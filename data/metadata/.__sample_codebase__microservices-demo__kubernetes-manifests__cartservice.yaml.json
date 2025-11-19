@@ -1,0 +1,12 @@
+{
+  "file": "./sample_codebase/microservices-demo/kubernetes-manifests/cartservice.yaml",
+  "language": "yaml",
+  "short_description": "Copyright 2018 Google LLC",
+  "imports": [],
+  "external_calls": [
+    "grpc",
+    "redis"
+  ],
+  "functions": [],
+  "classes": []
+}

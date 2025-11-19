@@ -1,0 +1,12 @@
+{
+  "file": "./sample_codebase/microservices-demo/README.md",
+  "language": "md",
+  "short_description": "<img src=\"/src/frontend/static/icons/Hipster_HeroLogoMaroon.svg\" width=\"300\" alt=\"Online Boutique\" />",
+  "imports": [],
+  "external_calls": [
+    "grpc",
+    "redis"
+  ],
+  "functions": [],
+  "classes": []
+}

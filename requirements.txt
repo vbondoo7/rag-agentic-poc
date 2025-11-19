@@ -1,0 +1,33 @@
+# Core runtime
+streamlit
+nest_asyncio
+pandas
+python-dotenv
+
+# LLM / Cloud model client
+google-generativeai
+google-genai
+
+# Vector DB and embeddings
+chromadb
+langchain-chroma
+langchain_community
+langchain_text_splitters
+sentence-transformers
+
+# JSON validation & utilities
+pydantic
+
+# Optional file loaders / parsing
+tqdm
+unstructured[local-inference]
+
+# Tree-sitter for richer code parsing
+tree-sitter
+tree-sitter-languages
+PyYAML
+
+# Logging / utilities
+python-json-logger
+tiktoken
+# py-tree-sitter==0.23.2

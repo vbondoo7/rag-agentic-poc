@@ -1,0 +1,9 @@
+{
+  "file": "./sample_codebase/microservices-demo/kustomize/components/container-images-registry/README.md",
+  "language": "md",
+  "short_description": "Update the container registry of the Online Boutique apps",
+  "imports": [],
+  "external_calls": [],
+  "functions": [],
+  "classes": []
+}

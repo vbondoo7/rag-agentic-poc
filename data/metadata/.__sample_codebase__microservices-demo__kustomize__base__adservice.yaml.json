@@ -1,0 +1,11 @@
+{
+  "file": "./sample_codebase/microservices-demo/kustomize/base/adservice.yaml",
+  "language": "yaml",
+  "short_description": "Copyright 2018 Google LLC",
+  "imports": [],
+  "external_calls": [
+    "grpc"
+  ],
+  "functions": [],
+  "classes": []
+}

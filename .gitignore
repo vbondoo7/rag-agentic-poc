@@ -1,0 +1,59 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+.venv/
+venv/
+ENV/
+env/
+pip-log.txt
+
+# Streamlit and Python logs
+logs/
+*.log
+*.tmp
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# macOS files
+.DS_Store
+
+# Editors/IDE configs
+.vscode/
+.idea/
+*.swp
+*~
+
+# Environment variable / secret files
+#*.env
+#.env.*
+.secrets/
+.secrets.toml
+.streamlit/secrets.toml
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Test results
+htmlcov/
+.coverage
+.tox/
+.pytest_cache/
+.noseids
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+*.egg
+
+# ChromaDB/Vector Database artifacts
+chroma_db/
+
+# PDF/Media cache (if generated)
+media_cache/

@@ -1,0 +1,11 @@
+{
+  "file": "./sample_codebase/microservices-demo/kustomize/components/alloydb/README.md",
+  "language": "md",
+  "short_description": "Integrate Online Boutique with AlloyDB",
+  "imports": [],
+  "external_calls": [
+    "redis"
+  ],
+  "functions": [],
+  "classes": []
+}

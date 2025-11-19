@@ -1,0 +1,26 @@
+{
+  "intent": "blueprint",
+  "solution": {
+    "modules": [
+      {
+        "name": "Notification Service",
+        "purpose": "Send alerts after successful transaction",
+        "pattern": "Event-driven microservice",
+        "risks": ["Message queue overload", "Duplicate deliveries"],
+        "tshirt_size": "S"
+      },
+      {
+        "name": "Audit Trail",
+        "purpose": "Track all changes to compliance data",
+        "pattern": "CQRS with Event Store",
+        "risks": ["Increased write latency"],
+        "tshirt_size": "M"
+      }
+    ]
+  },
+  "recommendations": [
+    "Use Kafka for pub/sub",
+    "Add retries and dead-letter queue",
+    "Integrate OpenTelemetry tracing"
+  ]
+}

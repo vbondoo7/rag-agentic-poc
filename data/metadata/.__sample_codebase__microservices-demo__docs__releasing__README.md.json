@@ -1,0 +1,11 @@
+{
+  "file": "./sample_codebase/microservices-demo/docs/releasing/README.md",
+  "language": "md",
+  "short_description": "Releasing Online Boutique",
+  "imports": [
+    "for"
+  ],
+  "external_calls": [],
+  "functions": [],
+  "classes": []
+}

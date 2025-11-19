@@ -1,0 +1,11 @@
+{
+  "file": "./sample_codebase/microservices-demo/kustomize/components/network-policies/README.md",
+  "language": "md",
+  "short_description": "Secure Online Boutique with Network Policies",
+  "imports": [],
+  "external_calls": [
+    "redis"
+  ],
+  "functions": [],
+  "classes": []
+}

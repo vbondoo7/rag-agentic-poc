@@ -1,0 +1,12 @@
+{
+  "file": "./sample_codebase/microservices-demo/src/frontend/validator/validator.go",
+  "language": "go",
+  "short_description": "Copyright 2024 Google LLC",
+  "imports": [
+    "validator",
+    "is"
+  ],
+  "external_calls": [],
+  "functions": [],
+  "classes": []
+}

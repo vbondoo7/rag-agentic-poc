@@ -1,0 +1,9 @@
+{
+  "file": "./sample_codebase/microservices-demo/.github/snippet-bot.yml",
+  "language": "yml",
+  "short_description": "Copyright 2021 Google LLC",
+  "imports": [],
+  "external_calls": [],
+  "functions": [],
+  "classes": []
+}

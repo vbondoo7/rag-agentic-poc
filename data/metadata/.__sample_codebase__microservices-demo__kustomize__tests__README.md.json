@@ -1,0 +1,9 @@
+{
+  "file": "./sample_codebase/microservices-demo/kustomize/tests/README.md",
+  "language": "md",
+  "short_description": "This directory contains a list of scenarios (different combinations of Kustomize Components) used for testing.",
+  "imports": [],
+  "external_calls": [],
+  "functions": [],
+  "classes": []
+}

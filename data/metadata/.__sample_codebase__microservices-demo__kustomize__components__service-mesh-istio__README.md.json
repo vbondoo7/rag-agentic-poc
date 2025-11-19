@@ -1,0 +1,11 @@
+{
+  "file": "./sample_codebase/microservices-demo/kustomize/components/service-mesh-istio/README.md",
+  "language": "md",
+  "short_description": "Service mesh with Istio",
+  "imports": [],
+  "external_calls": [
+    "redis"
+  ],
+  "functions": [],
+  "classes": []
+}

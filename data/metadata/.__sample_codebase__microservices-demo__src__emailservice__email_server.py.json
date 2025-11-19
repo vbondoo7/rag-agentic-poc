@@ -1,0 +1,45 @@
+{
+  "file": "./sample_codebase/microservices-demo/src/emailservice/email_server.py",
+  "language": "py",
+  "short_description": "!/usr/bin/python",
+  "imports": [
+    "argparse",
+    "opentelemetry.instrumentation.grpc",
+    "demo_pb2_grpc",
+    "opentelemetry",
+    "os",
+    "time",
+    "google.api_core.exceptions",
+    "opentelemetry.sdk.trace.export",
+    "opentelemetry.exporter.otlp.proto.grpc.trace_exporter",
+    "googlecloudprofiler",
+    "demo_pb2",
+    "traceback",
+    "google.auth.exceptions",
+    "grpc",
+    "concurrent",
+    "logger",
+    "jinja2",
+    "grpc_health.v1",
+    "opentelemetry.sdk.trace",
+    "sys"
+  ],
+  "external_calls": [
+    "grpc"
+  ],
+  "functions": [
+    "Check",
+    "Watch",
+    "__init__",
+    "send_email",
+    "SendOrderConfirmation",
+    "start",
+    "initStackdriverProfiling"
+  ],
+  "classes": [
+    "BaseEmailService",
+    "EmailService",
+    "DummyEmailService",
+    "HealthCheck"
+  ]
+}

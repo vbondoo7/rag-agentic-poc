@@ -1,0 +1,9 @@
+{
+  "file": "./sample_codebase/microservices-demo/.github/terraform/README.md",
+  "language": "md",
+  "short_description": "This folder contains the Terraform for some of the infrastructure used by the CICD (continuous integration and continuous delivery/continuous deployment) of this repository.",
+  "imports": [],
+  "external_calls": [],
+  "functions": [],
+  "classes": []
+}

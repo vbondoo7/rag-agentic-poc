@@ -1,0 +1,9 @@
+{
+  "file": "./sample_codebase/microservices-demo/kustomize/components/google-cloud-operations/README.md",
+  "language": "md",
+  "short_description": "Integrate Online Boutique with Google Cloud Operations",
+  "imports": [],
+  "external_calls": [],
+  "functions": [],
+  "classes": []
+}

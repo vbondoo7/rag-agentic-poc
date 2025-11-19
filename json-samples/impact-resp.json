@@ -1,0 +1,20 @@
+{
+  "intent": "impact",
+  "components": [
+    {
+      "name": "AuthService",
+      "impact": "API schema change",
+      "level": "High",
+      "tshirt_size": "L",
+      "justification": "Change affects all login endpoints"
+    },
+    {
+      "name": "UserService",
+      "impact": "Validation logic update",
+      "level": "Medium",
+      "tshirt_size": "M",
+      "justification": "Partial dependency on updated schema"
+    }
+  ],
+  "sources": ["auth/api/routes.py", "user/models/user.go"]
+}

@@ -1,0 +1,11 @@
+{
+  "file": "./sample_codebase/microservices-demo/src/paymentservice/package.json",
+  "language": "json",
+  "short_description": "\"description\": \"Payment Microservice demo\",",
+  "imports": [],
+  "external_calls": [
+    "grpc"
+  ],
+  "functions": [],
+  "classes": []
+}

@@ -1,0 +1,9 @@
+{
+  "file": "./sample_codebase/microservices-demo/kustomize/components/single-shared-session/README.md",
+  "language": "md",
+  "short_description": "Manage a single shared session for the Online Boutique apps",
+  "imports": [],
+  "external_calls": [],
+  "functions": [],
+  "classes": []
+}

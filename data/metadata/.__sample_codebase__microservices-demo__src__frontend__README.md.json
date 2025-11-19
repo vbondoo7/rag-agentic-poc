@@ -1,0 +1,9 @@
+{
+  "file": "./sample_codebase/microservices-demo/src/frontend/README.md",
+  "language": "md",
+  "short_description": "frontend",
+  "imports": [],
+  "external_calls": [],
+  "functions": [],
+  "classes": []
+}

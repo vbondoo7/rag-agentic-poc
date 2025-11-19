@@ -1,0 +1,9 @@
+{
+  "file": "./sample_codebase/microservices-demo/kustomize/components/service-mesh-istio/frontend.yaml",
+  "language": "yaml",
+  "short_description": "Copyright 2018 Google LLC",
+  "imports": [],
+  "external_calls": [],
+  "functions": [],
+  "classes": []
+}

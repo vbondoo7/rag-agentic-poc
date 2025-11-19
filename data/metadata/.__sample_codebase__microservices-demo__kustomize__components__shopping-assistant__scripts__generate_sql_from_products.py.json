@@ -1,0 +1,11 @@
+{
+  "file": "./sample_codebase/microservices-demo/kustomize/components/shopping-assistant/scripts/generate_sql_from_products.py",
+  "language": "py",
+  "short_description": "Copyright 2024 Google LLC",
+  "imports": [
+    "json"
+  ],
+  "external_calls": [],
+  "functions": [],
+  "classes": []
+}
