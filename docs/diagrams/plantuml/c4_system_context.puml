@@ -1,0 +1,81 @@
+@startuml C4_System_Context
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+LAYOUT_WITH_LEGEND()
+
+' System context for the Online Boutique (microservices-demo)
+Enterprise_Boundary(b0, "Online Boutique Boundary") {
+  Person(user, "Shopper", "A user browsing and buying products via the web UI")
+
+  System(frontend, "Frontend", "Web UI and HTTP server (Go) - exposes routes for browsing, cart, checkout, assistant")
+
+  Enterprise_Boundary(b1, "Backend Boundary") {
+    System(prodcat, "Product Catalog Service", "gRPC service (Go) - ListProducts/GetProduct/SearchProducts")
+    System(cart, "Cart Service", "gRPC service (.NET) - AddItem/GetCart/EmptyCart; persists to Redis or Spanner")
+    System(checkout, "Checkout Service", "gRPC service (Go) - PlaceOrder orchestration for checkout flow")
+    System(shipping, "Shipping Service", "gRPC service (Go) - GetQuote/ShipOrder")
+    System(currency, "Currency Service", "gRPC service (Node) - Convert, GetSupportedCurrencies")
+    System(payment, "Payment Service", "gRPC service (Node) - Charge credit cards")
+    System(email, "Email Service", "gRPC service (Python) - Send order confirmation emails")
+    System(recommendation, "Recommendation Service", "gRPC service (Python) - ListRecommendations")
+    System(adservice, "Ad Service", "gRPC service (Java) - GetAds")
+    System(shoppingAssistant, "Shopping Assistant", "HTTP Flask service (Python) - RAG assistant using LLMs + vectorstore")
+  }
+
+  Boundary(bInfra, "Infrastructure") {
+    SystemDb(redis, "Redis (redis-cart)", "Redis cache used by Cart Service")
+    SystemDb(alloy, "AlloyDB / Spanner", "Optional persistent store and vector DB for assistant and cart alternatives")
+    System_Ext(secretMgr, "Secret Manager", "Secrets used by assistant to fetch DB creds")
+    System_Ext(otel, "OTel Collector", "OpenTelemetry Collector for traces/metrics")
+    System_Ext(ci, "CI/CD (Cloud Build / skaffold / helm)", "Build and deploy pipeline using Helm and kustomize")
+  }
+}
+
+Rel(user, frontend, "Uses", "HTTP")
+Rel(frontend, prodcat, "gRPC: GetProduct / ListProducts", "gRPC")
+Rel(frontend, cart, "gRPC: AddItem / GetCart / EmptyCart", "gRPC")
+Rel(frontend, recommendation, "gRPC: ListRecommendations", "gRPC")
+Rel(frontend, checkout, "gRPC: PlaceOrder", "gRPC")
+Rel(frontend, shipping, "gRPC: GetQuote", "gRPC")
+Rel(frontend, adservice, "gRPC: GetAds", "gRPC")
+Rel(frontend, shoppingAssistant, "HTTP: assistant endpoints", "HTTP")
+
+Rel(checkout, cart, "gRPC: GetCart / EmptyCart", "gRPC")
+Rel(checkout, prodcat, "gRPC: GetProduct", "gRPC")
+Rel(checkout, currency, "gRPC: Convert", "gRPC")
+Rel(checkout, payment, "gRPC: Charge", "gRPC")
+Rel(checkout, shipping, "gRPC: ShipOrder", "gRPC")
+Rel(checkout, email, "gRPC: SendOrderConfirmation", "gRPC")
+
+Rel(recommendation, prodcat, "gRPC: ListProducts", "gRPC")
+Rel(recommendation, prodcat, "gRPC: SearchProducts", "gRPC")
+
+Rel(cart, redis, "Reads/Writes cart data", "redis://redis-cart:6379")
+Rel(cart, alloy, "Optional persistent store (Spanner/AlloyDB)", "JDBC/PG")
+Rel(shoppingAssistant, alloy, "Similarity search / vectorstore", "PG / VectorStore")
+Rel(shoppingAssistant, secretMgr, "Fetch DB credentials", "API")
+
+Rel_U(prodcat, otel, "Emits traces & metrics")
+Rel_U(cart, otel, "Emits traces & metrics")
+Rel_U(checkout, otel, "Emits traces & metrics")
+Rel_U(shipping, otel, "Emits traces & metrics")
+Rel_U(currency, otel, "Emits traces & metrics")
+Rel_U(payment, otel, "Emits traces & metrics")
+Rel_U(email, otel, "Emits traces & metrics")
+Rel_U(recommendation, otel, "Emits traces & metrics")
+Rel_U(adservice, otel, "Emits traces & metrics")
+Rel_U(shoppingAssistant, otel, "Emits traces & metrics")
+
+Rel_U(ci, frontend, "Deploys")
+Rel_U(ci, prodcat, "Deploys")
+Rel_U(ci, cart, "Deploys")
+Rel_U(ci, checkout, "Deploys")
+Rel_U(ci, shipping, "Deploys")
+Rel_U(ci, currency, "Deploys")
+Rel_U(ci, payment, "Deploys")
+Rel_U(ci, email, "Deploys")
+Rel_U(ci, adservice, "Deploys")
+Rel_U(ci, recommendation, "Deploys")
+Rel_U(ci, shoppingAssistant, "Deploys")
+
+SHOW_LEGEND()
+@enduml

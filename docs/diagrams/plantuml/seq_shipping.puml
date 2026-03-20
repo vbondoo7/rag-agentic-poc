@@ -1,0 +1,13 @@
+@startuml seq_shipping
+participant Checkout
+participant ShippingService
+
+Checkout -> ShippingService : GetQuote(Address, CartItems)
+ShippingService -> ShippingService : compute quote (by item count)
+ShippingService -> Checkout : GetQuoteResponse(cost_usd)
+
+Checkout -> ShippingService : ShipOrder(Address, CartItems)
+ShippingService -> ShippingService : generate tracking id
+ShippingService -> Checkout : ShipOrderResponse(tracking_id)
+
+@enduml

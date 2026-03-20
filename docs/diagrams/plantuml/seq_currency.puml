@@ -1,0 +1,9 @@
+@startuml seq_currency
+participant Frontend
+participant CurrencyService
+
+Frontend -> CurrencyService : Convert(amountUSD, toCurrency)
+CurrencyService -> CurrencyService : load rates from data/currency_conversion.json
+CurrencyService -> Frontend : Money (converted)
+
+@enduml

@@ -1,0 +1,95 @@
+%% C4 Context diagram for Online Boutique (mermaid adaptation)
+%% This follows the structure of your C4 sample but written in Mermaid flowchart syntax.
+flowchart TB
+  %% Enterprise boundary (top-level)
+  subgraph b0["Online Boutique Boundary"]
+    direction TB
+    user["Shopper\n(Person)"]
+    frontend["Frontend\n(Web UI - Go)\nHTTP: 8080"]
+
+    %% Backend systems group
+    subgraph b1["Backend Boundary"]
+      direction LR
+      prodcat["ProductCatalogService\n(gRPC:3550)"]
+      cart["CartService\n(gRPC:7070)\n(persists to Redis)"]
+      checkout["CheckoutService\n(gRPC:5050)"]
+      shipping["ShippingService\n(gRPC:50051)"]
+      currency["CurrencyService\n(gRPC:7000)"]
+      payment["PaymentService\n(gRPC)"]
+      email["EmailService\n(gRPC)"]
+      recommendation["RecommendationService\n(gRPC:8080)"]
+      adservice["AdService\n(gRPC:9555)"]
+      shoppingAssistant["ShoppingAssistant\n(HTTP Flask)\nRAG + VectorStore"]
+    end
+
+    %% Infrastructure boundary
+    subgraph bInfra["Infrastructure / Infra Services"]
+      direction TB
+      redis["Redis (redis-cart:6379)"]
+      alloy["AlloyDB / Spanner (optional)"]
+      secretMgr["Secret Manager"]
+      otel["OTel Collector (tracing)"]
+      cicd["CI/CD (Cloud Build / Helm / kustomize)"]
+    end
+
+  end
+
+  %% Connections (labelled with protocol/port)
+  user -->|HTTP| frontend
+  frontend -->|gRPC: GetProduct / ListProducts| prodcat
+  frontend -->|gRPC: AddItem / GetCart / EmptyCart| cart
+  frontend -->|gRPC: ListRecommendations| recommendation
+  frontend -->|gRPC: PlaceOrder| checkout
+  frontend -->|gRPC: GetQuote| shipping
+  frontend -->|gRPC: GetAds| adservice
+  frontend -->|HTTP: assistant| shoppingAssistant
+
+  checkout -->|gRPC: GetCart / EmptyCart| cart
+  checkout -->|gRPC: GetProduct| prodcat
+  checkout -->|gRPC: Convert| currency
+  checkout -->|gRPC: Charge| payment
+  checkout -->|gRPC: ShipOrder| shipping
+  checkout -->|gRPC: SendOrderConfirmation| email
+
+  recommendation -->|gRPC: ListProducts / SearchProducts| prodcat
+
+  cart -->|reads/writes| redis
+  cart -->|optional persistent store| alloy
+  shoppingAssistant -->|vector search / similarity| alloy
+  shoppingAssistant -->|fetch secrets| secretMgr
+
+  %% Observability and CI links
+  prodcat -->|traces/metrics| otel
+  cart -->|traces/metrics| otel
+  checkout -->|traces/metrics| otel
+  shipping -->|traces/metrics| otel
+  currency -->|traces/metrics| otel
+  payment -->|traces/metrics| otel
+  email -->|traces/metrics| otel
+  recommendation -->|traces/metrics| otel
+  adservice -->|traces/metrics| otel
+  shoppingAssistant -->|traces/metrics| otel
+
+  cicd -->|deploys| frontend
+  cicd -->|deploys| prodcat
+  cicd -->|deploys| cart
+  cicd -->|deploys| checkout
+  cicd -->|deploys| shipping
+  cicd -->|deploys| currency
+  cicd -->|deploys| payment
+  cicd -->|deploys| email
+  cicd -->|deploys| adservice
+  cicd -->|deploys| recommendation
+  cicd -->|deploys| shoppingAssistant
+
+  %% Styling (optional)
+  classDef system fill:#e0f2fe,stroke:#036,stroke-width:1px
+  classDef infra fill:#f3e8ff,stroke:#630,stroke-width:1px
+  class frontend,prodcat,cart,checkout,shipping,currency,payment,email,recommendation,adservice,shoppingAssistant system
+  class redis,alloy,secretMgr,otel,cicd infra
+
+  %% Legend
+  subgraph legend["Legend"]
+    direction LR
+    A["Person / Actor"] --- B["System / Service"]
+  end

@@ -1,0 +1,9 @@
+@startuml seq_email
+participant Checkout
+participant EmailService
+
+Checkout -> EmailService : SendOrderConfirmation(email, order)
+EmailService -> EmailService : render confirmation template / send (dummy or cloud mail)
+EmailService -> Checkout : ack
+
+@enduml

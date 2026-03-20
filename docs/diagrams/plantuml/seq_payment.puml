@@ -1,0 +1,9 @@
+@startuml seq_payment
+participant Checkout
+participant PaymentService
+
+Checkout -> PaymentService : Charge(ChargeRequest {amount, credit_card})
+PaymentService -> PaymentService : simulate charge / gateway integration
+PaymentService -> Checkout : ChargeResponse(transaction_id)
+
+@enduml

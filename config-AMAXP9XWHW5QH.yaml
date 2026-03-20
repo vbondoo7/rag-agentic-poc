@@ -15,7 +15,7 @@ llm_mapping:
   doc_agent: "gemini-2.5-flash"
 
 ui:
-  title: "Agentic Architect AI — RAG + Gemini"
+  title: "Intelligent Agentic Architect"
   description: "Ask about codebase, functional flows, impact of changes, and generate docs."
 
 logging:

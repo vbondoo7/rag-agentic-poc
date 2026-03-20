@@ -1,0 +1,12 @@
+@startuml seq_ads
+actor User
+participant Frontend
+participant AdService
+
+User -> Frontend : page load (home / product)
+Frontend -> AdService : GetAds(AdRequest {contextKeys})
+AdService -> AdService : select ads from static map
+AdService -> Frontend : AdResponse(list of ads)
+Frontend -> User : Show ads
+
+@enduml

@@ -1,3 +1,7 @@
+# UNUSED BACKUP FILE - main copy.py
+# This file appears to be a development backup. It is kept for reference only.
+# Do not execute or import this file. Consider deleting it after review.
+
 # main.py
 import os
 import streamlit as st
@@ -128,7 +132,7 @@ if "selected_chat" in st.session_state and st.session_state["selected_chat"]:
     with st.modal(f"🧠 Chat #{chat_id} — {chat[2]}"):
         st.markdown(f"**📅 Created:** {chat[4]}")
 
-        for role, msg, t in messages: 
+        for role, msg, t in messages:
             if role == "user":
                 st.markdown(f"🧍‍♂️ **User:** {msg}")
             else:

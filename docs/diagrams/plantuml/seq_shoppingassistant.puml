@@ -1,0 +1,22 @@
+@startuml seq_shoppingassistant
+actor User
+participant Frontend
+participant ShoppingAssistant
+participant SecretManager
+participant AlloyDB as "AlloyDB / VectorStore"
+participant GeminiLLM as "Gemini LLM / Embeddings"
+
+User -> Frontend : POST /assistant {message, image}
+Frontend -> ShoppingAssistant : HTTP POST (message + image)
+ShoppingAssistant -> SecretManager : Access secret (ALLOYDB credentials)
+SecretManager -> ShoppingAssistant : return DB credentials
+ShoppingAssistant -> GeminiLLM : Vision prompt (image) -> describe room
+GeminiLLM -> ShoppingAssistant : room description
+ShoppingAssistant -> AlloyDB : similarity_search(description + user prompt)
+AlloyDB -> ShoppingAssistant : list of relevant product docs
+ShoppingAssistant -> GeminiLLM : final prompt (room desc + docs + user request)
+GeminiLLM -> ShoppingAssistant : design recommendation
+ShoppingAssistant -> Frontend : return recommended design + product ids
+Frontend -> User : Render recommendations
+
+@enduml

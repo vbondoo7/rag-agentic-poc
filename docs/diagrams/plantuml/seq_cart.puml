@@ -1,0 +1,25 @@
+@startuml seq_cart
+actor User
+participant Frontend
+participant Cart as "CartService (gRPC)"
+participant Redis as "Redis Cart Store"
+
+User -> Frontend : POST /cart (AddToCart {userId, productId, quantity})
+Frontend -> Cart : AddItem(AddItemRequest)
+Cart -> Redis : SET/UPDATE cart(userId)
+Redis -> Cart : ok
+Cart -> Frontend : Empty (ack)
+
+User -> Frontend : GET /cart
+Frontend -> Cart : GetCart(GetCartRequest)
+Cart -> Redis : GET cart(userId)
+Redis -> Cart : Cart(items)
+Cart -> Frontend : GetCartResponse
+
+User -> Frontend : POST /cart/empty
+Frontend -> Cart : EmptyCart(EmptyCartRequest)
+Cart -> Redis : DELETE cart(userId)
+Redis -> Cart : ok
+Cart -> Frontend : Empty ack
+
+@enduml

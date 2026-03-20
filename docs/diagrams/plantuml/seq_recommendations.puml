@@ -1,0 +1,14 @@
+@startuml seq_recommendations
+actor User
+participant Frontend
+participant Recommendation
+participant ProductCatalog as "Product Catalog (gRPC)"
+
+User -> Frontend : Browse / product page loads
+Frontend -> Recommendation : ListRecommendations(request: product_ids, user_id)
+Recommendation -> ProductCatalog : ListProducts() or SearchProducts()
+ProductCatalog -> Recommendation : ListProductsResponse(products)
+Recommendation -> Frontend : ListRecommendationsResponse(product_ids)
+Frontend -> User : Render recommendations
+
+@enduml

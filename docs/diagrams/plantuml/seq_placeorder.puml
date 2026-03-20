@@ -1,0 +1,35 @@
+@startuml seq_placeorder
+actor User
+participant Frontend
+participant Checkout
+participant CartService as "Cart Service (gRPC:7070)"
+participant ProductCatalog as "Product Catalog (gRPC:3550)"
+participant Currency as "Currency (gRPC:7000)"
+participant Payment as "Payment Service"
+participant Shipping as "Shipping Service"
+participant Email as "Email Service"
+participant Redis as "Redis (cartstore)"
+
+User -> Frontend : POST /cart/checkout (address, credit card, userCurrency, userId, email)
+Frontend -> Checkout : PlaceOrder(PlaceOrderRequest)
+Checkout -> CartService : GetCart(userId)
+CartService -> Redis : GET cart(userId)
+Redis -> CartService : cart(items)
+CartService -> Checkout : Return Cart
+Checkout -> ProductCatalog : GetProduct(productId) [for each item]
+ProductCatalog -> Checkout : Product(priceUSD)
+Checkout -> Currency : Convert(amountUSD, toCurrency)
+Currency -> Checkout : Money(localized)
+Checkout -> Payment : Charge(Amount, CreditCardInfo)
+Payment -> Checkout : ChargeResponse(transactionId)
+Checkout -> Shipping : ShipOrder(Address, items)
+Shipping -> Checkout : ShipOrderResponse(trackingID)
+Checkout -> CartService : EmptyCart(userId)
+CartService -> Redis : DELETE cart(userId)
+CartService -> Checkout : EmptyCartResult
+Checkout -> Email : SendOrderConfirmation(email, orderResult)
+Email -> Checkout : ack
+Checkout -> Frontend : PlaceOrderResponse(OrderResult)
+Frontend -> User : HTTP response (confirmation)
+
+@enduml
