@@ -13,10 +13,8 @@ This is intentionally small and synchronous for Streamlit.
 
 from ai_agents import prompts
 from ai_agents.prompts import PROMPTS
-try:
-    import google.generativeai as genai
-except Exception:
-    genai = None
+from google import generativeai as genai_stub  # placeholder if google package not present
+import google.generativeai as genai
 from logger import log
 import yaml
 import os
@@ -31,60 +29,37 @@ def load_config():
 def ensure_genai_configured():
     GEMINI_API_KEY = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
     if not GEMINI_API_KEY:
-        log.warning("GEMINI_API_KEY not set in env (set it or in Streamlit secrets). LLM calls may fail.")
+        log.warning("GEMINI_API_KEY not set in env (set it or in Streamlit secrets). Agents will error on LLM calls.")
         return False
-    if genai is None:
-        log.warning("google.generativeai package not available; LLM calls disabled.")
-        return False
-    try:
-        genai.configure(api_key=GEMINI_API_KEY)
-        return True
-    except Exception as e:
-        log.warning("Failed to configure generativeai: %s", e)
-        return False
+    genai.configure(api_key=GEMINI_API_KEY)
+    return True
 
 ensure_genai_configured()
 
 class Agent:
-    def __init__(self, name, tools=None, handler=None):
-        """Handler may be a callable or an object exposing .analyze/.generate methods.
-
-        If `handler` is supplied, Agent.run will delegate to it. Otherwise Agent will
-        use the prompt templates + google.generativeai (if available).
-        """
+    def __init__(self, name, tools=None):
         self.name = name
         self.tools = tools or {}
-        self.handler = handler
-        cfg = load_config()
-        ag_cfg = cfg.get("agents", {}).get(name, cfg.get("llm_defaults", {}))
-        self.model = ag_cfg.get("model", cfg.get("llm_defaults", {}).get("model"))
+        cfg = load_config() or {}
+        # support either an explicit `agents` mapping or a legacy `llm_defaults` structure
+        agents_cfg = cfg.get("agents", {})
+        ag_cfg = agents_cfg.get(name, {})
+        # fallback to llm_mapping.default or a sensible hard-coded default
+        default_model = cfg.get("llm_mapping", {}).get("default", "gemini-2.5-flash")
+        self.model = ag_cfg.get("model", default_model)
         self.temperature = ag_cfg.get("temperature", cfg.get("llm_defaults", {}).get("temperature", 0.0))
         self.prompt_template = PROMPTS.get(name, PROMPTS.get("UnderstandingAgent"))
 
     def run(self, query, retrieved_context=""):
-        # Delegate to provided handler if available
-        if self.handler:
-            try:
-                # Handler can be a simple callable
-                if callable(self.handler):
-                    return self.handler(query, retrieved_context)
-                # Or an object with analyze/generate
-                if hasattr(self.handler, "analyze"):
-                    return self.handler.analyze(query, retrieved_context)
-                if hasattr(self.handler, "generate"):
-                    return self.handler.generate(query, retrieved_context)
-                # fallback to str
-                return str(self.handler)
-            except Exception as e:
-                log.exception("Agent handler error for %s: %s", self.name, e)
-                return f"Agent handler error: {e}"
-
-        # No handler — fall back to LLM via prompt templates
         prompt = self.prompt_template.format(context=retrieved_context, query=query)
-        if genai is None:
-            log.error("No generative AI package available and no handler for agent %s", self.name)
-            return "LLM unavailable"
         try:
+            # If no LLM key is configured, return a helpful fallback for local testing.
+            if not (os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")):
+                log.info("GEMINI_API_KEY not set — returning retrieved context as fallback response")
+                # Return a short summary / echo so callers can see retrieval is working.
+                snippet = (retrieved_context[:1000] + "...") if len(retrieved_context) > 1000 else retrieved_context
+                return f"[LLM disabled] Retrieved context (truncated):\n{snippet}"
+
             model = genai.GenerativeModel(self.model)
             resp = model.generate_content(prompt, temperature=self.temperature)
             return resp.text if hasattr(resp, "text") else str(resp)
@@ -93,5 +68,5 @@ class Agent:
             return f"LLM error: {e}"
 
 # small registry factory
-def create_agent(name, tools=None, handler=None):
-    return Agent(name, tools=tools or {}, handler=handler)
+def create_agent(name, tools=None):
+    return Agent(name, tools=tools or {})

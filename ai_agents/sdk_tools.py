@@ -1,16 +1,39 @@
 # agents/sdk_tools.py
 import logging
-from typing import Tuple, List, Dict
+from typing import Tuple, List, Dict, Any
 from tools.vector_store import VectorStore
 
 logger = logging.getLogger(__name__)
 
 # Thin wrapper for RAG search
-def search_vector(query: str, top_k: int = 5, persist_dir: str = "chroma_db") -> Dict:
+def search_vector(query: str, top_k: int = 5, topk: int = None, persist_dir: str = "chroma_db") -> Tuple[str, Dict[str, Any]]:
+    """Run a vector search and return (context_text, docs_dict).
+
+    Returns:
+      - context_text: joined document text used as prompt context
+      - docs_dict: raw documents+metadatas dict for callers that need sources
+
+    Accepts either `top_k` or `topk` (legacy callers).
+    """
+    if topk is not None:
+        top_k = topk
     vs = VectorStore(persist_directory=persist_dir)
     res = vs.query([query], n_results=top_k)
-    # normalize result
-    return res
+
+    # chroma returns nested lists per-query; we expect a single-query call so we take first element
+    documents = []
+    metadatas = []
+    try:
+        documents = res.get("documents", [[]])[0] if isinstance(res.get("documents", None), list) else res.get("documents", [])
+        metadatas = res.get("metadatas", [[]])[0] if isinstance(res.get("metadatas", None), list) else res.get("metadatas", [])
+    except Exception:
+        logger.exception("Failed to normalize vector store response")
+
+    # join into a single context string (agents expect plain text context)
+    context = "\n\n".join([d for d in documents if d])
+    docs_dict = {"documents": documents, "metadatas": metadatas}
+    return context, docs_dict
+
 
 def detect_intent(query: str) -> str:
     q = query.lower()
@@ -24,40 +47,20 @@ def detect_intent(query: str) -> str:
         return "understanding"
     return "generic"
 
+# Minimal memory helpers. The project also includes a more complete ChatDB in ai_agents/db.py —
+# these helpers provide a lightweight in-memory fallback so agents that call memory functions
+# won't crash when run from scripts/tests.
+_memory_store: List[Dict] = []
 
-def read_memory(limit: int = 10) -> list:
-    """Simple memory reader stub. Returns recent memory entries.
+def read_memory(limit: int = 20) -> List[Dict]:
+    """Return recent memory entries (simple in-memory list)."""
+    return list(_memory_store[-limit:])
 
-    This is intentionally minimal — projects can replace with a proper memory store.
-    """
+def append_memory(entry: Dict) -> bool:
+    """Append a memory entry to the in-memory store. Returns True on success."""
     try:
-        # read a JSON lines file if present
-        import json, os
-        mem_file = os.path.join("data", "memory.jsonl")
-        if not os.path.exists(mem_file):
-            return []
-        out = []
-        with open(mem_file, "r", encoding="utf8") as fh:
-            for i, line in enumerate(fh):
-                if i >= limit:
-                    break
-                try:
-                    out.append(json.loads(line.strip()))
-                except Exception:
-                    out.append({"text": line.strip()})
-        return out
-    except Exception:
-        return []
-
-
-def append_memory(entry: dict) -> bool:
-    """Append a memory entry (dict) to the memory file. Returns True on success."""
-    try:
-        import json, os
-        os.makedirs("data", exist_ok=True)
-        mem_file = os.path.join("data", "memory.jsonl")
-        with open(mem_file, "a", encoding="utf8") as fh:
-            fh.write(json.dumps(entry, ensure_ascii=False) + "\n")
+        _memory_store.append(entry)
         return True
     except Exception:
+        logger.exception("Failed to append memory")
         return False
