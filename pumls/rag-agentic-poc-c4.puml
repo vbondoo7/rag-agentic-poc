@@ -1,0 +1,19 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(user, "User", "Interacts via Streamlit UI")
+Container(ui, "Streamlit UI (main.py)", "Python/Streamlit", "User interface, chat history")
+Container(orch, "Architect Agent", "Python", "Intent routing, RAG, agent orchestration")
+Container(agents, "Agents", "Python", "Understanding, Impact, Blueprint, etc.")
+Container(rag, "RAG/Vector DB", "ChromaDB", "Embeddings, Metadata")
+Container(db, "ChatDB", "SQLite", "Chat/message persistence")
+
+Rel(user, ui, "Uses")
+Rel(ui, orch, "Calls run_agent_sync()")
+Rel(orch, rag, "search_vector()")
+Rel(orch, agents, "Delegates task")
+Rel(agents, orch, "Returns agent response")
+Rel(orch, db, "Persists chat/message")
+Rel(db, ui, "Provides chat history")
+
+@enduml

@@ -1,0 +1,43 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+package "Current System" {
+  [main.py <<Streamlit>>]
+  [architect_agent.py]
+  [agent_manager.py]
+  [Agents]
+  [embedder.py <<SentenceTransformers>>]
+  [vector_store.py <<ChromaDB>>]
+  [ChatDB <<SQLite>>]
+}
+
+package "Enhancements" {
+  [Auth Layer <<OAuth/SAML>>]
+  [Async Task Queue <<Celery/RQ>>]
+  [LLM API Integration <<OpenAI/Gemini>>]
+  [Monitoring & Analytics <<Prometheus/Grafana>>]
+  [REST API <<FastAPI>>]
+  [Test Suite <<pytest>>]
+}
+
+[main.py] ..> [Auth Layer] : "Add user authentication"
+[main.py] ..> [REST API] : "Expose REST endpoints"
+[architect_agent.py] ..> [Async Task Queue] : "Offload long tasks"
+[architect_agent.py] ..> [LLM API Integration] : "Plug in more LLMs"
+[agent_manager.py] ..> [Monitoring & Analytics] : "Track agent usage"
+[embedder.py] ..> [Async Task Queue] : "Background embedding"
+[ChatDB] ..> [Monitoring & Analytics] : "Log chat stats"
+[Agents] ..> [Test Suite] : "Add agent tests"
+
+note right
+Enhancement Suggestions:
+- Add authentication/authorization
+- Expose REST API for integration
+- Use async queue for heavy tasks
+- Integrate more LLM providers
+- Add monitoring/analytics
+- Expand test coverage
+end note
+
+@enduml

@@ -1,0 +1,13 @@
+@startuml
+start
+:User submits query via Streamlit UI;
+:main.py calls run_agent_sync();
+:Detect intent (architect_agent.py);
+:Retrieve context (RAG via search_vector);
+:Delegate to appropriate agent;
+:Agent processes input and context;
+:Return agent response to orchestrator;
+:Persist chat/message (ChatDB);
+:Display response in UI;
+stop
+@enduml

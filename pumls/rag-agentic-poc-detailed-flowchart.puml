@@ -1,0 +1,72 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+actor User
+
+package "UI Layer" {
+  [main.py <<Streamlit>>]
+}
+
+package "Orchestration" {
+  [architect_agent.py]
+  [agent_manager.py]
+  [intent_router.py]
+}
+
+package "Agents" {
+  [understanding_agent.py]
+  [impact_agent.py]
+  [blueprint_agent.py]
+  [doc_generator_agent.py]
+  [requirements_agent.py]
+}
+
+package "Retrieval & Embedding" {
+  [embedder.py <<SentenceTransformers>>]
+  [code_analyzer.py <<Tree-sitter/Regex>>]
+  [sdk_tools.py]
+  [vector_store.py <<ChromaDB>>]
+}
+
+database "Chroma Vector DB\n(ChromaDB)" as ChromaDB
+database "ChatDB\n(SQLite)" as ChatDB
+
+User --> [main.py] : "User input"
+[main.py] --> [architect_agent.py] : "run_agent_sync(user_input, persist_dir)"
+[main.py] --> [embedder.py] : "embed_codebase(repo_path)\n(if rebuild)"
+[embedder.py] --> [code_analyzer.py] : "analyze_folder()"
+[embedder.py] --> ChromaDB : "Write embeddings"
+[architect_agent.py] --> [intent_router.py] : "detect_intent(user_input)"
+[architect_agent.py] --> [sdk_tools.py] : "search_vector(query, persist_dir)"
+[sdk_tools.py] --> [vector_store.py] : "vector search"
+[vector_store.py] --> ChromaDB : "Query vectors"
+[architect_agent.py] --> [agent_manager.py] : "select agent"
+[agent_manager.py] --> [understanding_agent.py] : "analyze/generate"
+[agent_manager.py] --> [impact_agent.py] : "analyze/generate"
+[agent_manager.py] --> [blueprint_agent.py] : "analyze/generate"
+[agent_manager.py] --> [doc_generator_agent.py] : "analyze/generate"
+[agent_manager.py] --> [requirements_agent.py] : "analyze/generate"
+[agent_manager.py] <-- [understanding_agent.py] : "response"
+[agent_manager.py] <-- [impact_agent.py] : "response"
+[agent_manager.py] <-- [blueprint_agent.py] : "response"
+[agent_manager.py] <-- [doc_generator_agent.py] : "response"
+[agent_manager.py] <-- [requirements_agent.py] : "response"
+[agent_manager.py] --> [architect_agent.py] : "agent response"
+[architect_agent.py] --> [main.py] : "agent response"
+[main.py] --> [ChatDB] : "Persist chat/message"
+
+note right of [embedder.py]
+Tools:
+- SentenceTransformers (embeddings)
+- Tree-sitter/Regex (code analysis)
+- ChromaDB (vector store)
+end note
+
+note right of [main.py]
+Frameworks:
+- Streamlit (UI)
+- SQLite (ChatDB)
+end note
+
+@enduml
