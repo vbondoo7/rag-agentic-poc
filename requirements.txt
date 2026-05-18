@@ -14,10 +14,22 @@ langchain-chroma
 langchain_community
 langchain_text_splitters
 sentence-transformers
-
+langsmith
+langsmith[otel]
 # JSON validation & utilities
 pydantic
-
+crewai
+opentelemetry-instrumentation-crewai
+#opentelemetry-instrumentation-google-generativeai
+opentelemetry-instrumentation-google-genai
+opentelemetry-api
+opentelemetry-sdk
+opentelemetry-exporter-otlp
+opentelemetry-instrumentation
+openinference-instrumentation-crewai
+openinference-instrumentation-google-genai
+opentelemetry-instrumentation-fastapi
+opentelemetry-instrumentation-requests
 # Optional file loaders / parsing
 tqdm
 unstructured[local-inference]

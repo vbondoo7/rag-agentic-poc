@@ -5,7 +5,10 @@ import streamlit as st
 import logging
 from datetime import datetime
 from dotenv import load_dotenv
-
+from langsmith.integrations.otel import OtelSpanProcessor
+from opentelemetry import trace
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.trace.export import SimpleSpanProcessor
 # your project modules (must exist as in your repo)
 from ai_agents.db import ChatDB
 from tools.embedder import Embedder
@@ -19,6 +22,24 @@ logger.info("Starting Agentic Architect AI (Streamlit UI)")
 # --- LOAD CONFIG (keep your original approach) ---
 with open("config.yaml", "r") as fh:
     CONFIG = yaml.safe_load(fh)
+
+# Set up OpenTelemetry tracer
+provider = TracerProvider()
+span_processor = OtelSpanProcessor()
+provider.add_span_processor(span_processor)
+trace.set_tracer_provider(provider)
+
+# Automatically instrument CrewAI and Google Cloud (Gemini) calls for tracing — adjust imports based on your actual instrumentation packages
+#from opentelemetry.instrumentation.crewai import CrewAIInstrumentor
+#from opentelemetry.instrumentation.openai import OpenAIInstrumentor
+try:
+    from opentelemetry.instrumentation.google_genai import GoogleGenerativeAiSdkInstrumentor
+    GoogleGenerativeAiSdkInstrumentor().instrument()
+except ImportError:
+    print("Google GenAI instrumentation not available, skipping...")
+#CrewAIInstrumentor().instrument()
+#OpenAIInstrumentor().instrument()
+#GoogleGenerativeAiSdkInstrumentor().instrument()
 
 # Ensure directories from config exist (use same keys as your config.yaml)
 persist_dir = CONFIG["app"].get("persist_dir", "chroma_db")

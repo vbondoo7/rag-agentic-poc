@@ -51,6 +51,7 @@ build/
 dist/
 *.egg-info/
 *.egg
+.env_copy
 
 # ChromaDB/Vector Database artifacts
 chroma_db/

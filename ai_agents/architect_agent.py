@@ -37,13 +37,25 @@ def run_agent_sync(user_input: str, persist_dir: str = "chroma_db"):
         logger.info("🧠 Detected intent: %s", intent)
 
         # Step 2: Retrieve RAG context
-        rag = search_vector(user_input, top_k=5, persist_dir=persist_dir)
+        context, rag = search_vector(user_input, top_k=5, persist_dir=persist_dir)
         docs = rag.get("documents", [[]])[0] if isinstance(rag.get("documents"), list) else []
         metadatas = rag.get("metadatas", [[]])[0] if isinstance(rag.get("metadatas"), list) else []
 
+        # Ensure metadatas is a list of dicts
+        if isinstance(metadatas, dict):
+            # Convert dict to list (sorted by key if integer keys)
+            try:
+                metadatas = [metadatas[k] for k in sorted(metadatas.keys())]
+            except Exception:
+                metadatas = list(metadatas.values())
+        if not isinstance(metadatas, list):
+            metadatas = []
+
         context_pieces = []
         for i, doc in enumerate(docs):
-            src = metadatas[i].get("source") if i < len(metadatas) else None
+            src = None
+            if i < len(metadatas) and isinstance(metadatas[i], dict):
+                src = metadatas[i].get("source")
             context_pieces.append(f"Source: {src}\n{doc}")
         context = "\n\n---\n\n".join(context_pieces)[:60000] if context_pieces else "No relevant documents found."
         logger.info("📚 Context prepared with %d docs.", len(context_pieces))

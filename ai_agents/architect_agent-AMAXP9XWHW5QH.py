@@ -97,7 +97,7 @@ def get_status():
 
 
 def _build_context(user_input: str, persist_dir: str):
-    rag = search_vector(user_input, top_k=5, persist_dir=persist_dir)
+    context, rag = search_vector(user_input, top_k=5, persist_dir=persist_dir)
     docs = rag.get("documents", [[]])[0] if isinstance(rag.get("documents"), list) else []
     metadatas = rag.get("metadatas", [[]])[0] if isinstance(rag.get("metadatas"), list) else []
 

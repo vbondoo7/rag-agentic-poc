@@ -28,12 +28,12 @@ def run_agent(agent_key: str, query: str, topk: int = 6):
         log.error("Unknown agent: " + agent_key)
         return "Unknown agent"
     # quick retrieval step
-    ctx, docs = sdk_tools.search_vector(query, topk=topk)
+    ctx, docs_dict = sdk_tools.search_vector(query, topk=topk)
     # include memory if needed
     mem = sdk_tools.read_memory()
     # we pass only retrieved context (to keep prompt compact); agents can call sdk_tools themselves if advanced
     out = agent.run(query, retrieved_context=ctx)
-    return out  
+    return out
 
 if __name__ == "__main__":
     test_query = "Explain the impact of AI on modern software development."

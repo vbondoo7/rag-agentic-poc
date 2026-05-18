@@ -36,10 +36,10 @@ def run_agent(agent_key: str, query: str, topk: int = 6):
         log.error("Unknown agent: %s", agent_key)
         return "Unknown agent"
 
-    # quick retrieval step (sdk_tools.search_vector returns a dict)
-    res = sdk_tools.search_vector(query, top_k=topk)
-    docs = res.get("documents", [])
-    metadatas = res.get("metadatas", [])
+    # quick retrieval step (sdk_tools.search_vector returns (context, docs_dict))
+    ctx, docs_dict = sdk_tools.search_vector(query, top_k=topk)
+    docs = docs_dict.get("documents", [])
+    metadatas = docs_dict.get("metadatas", [])
 
     # build a compact context string
     context_pieces = []
