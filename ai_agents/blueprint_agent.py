@@ -1,11 +1,12 @@
 # agents/blueprint_agent.py
-import google.generativeai as genai
+import google.genai as genai
 import os, logging, json, yaml
 
 logger = logging.getLogger(__name__)
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-if GEMINI_API_KEY:
-    genai.configure(api_key=GEMINI_API_KEY)
+client = genai.Client(api_key=GEMINI_API_KEY) if GEMINI_API_KEY else None
+#if GEMINI_API_KEY:
+#    genai.configure(api_key=GEMINI_API_KEY)
 
 # Load config
 with open("config.yaml", "r") as fh:
@@ -41,16 +42,16 @@ Return STRICT JSON:
 
 class BlueprintGeneratorAgent:
     def generate(self, query: str, context: str = "") -> str:
-        prompt = PROMPT.format(context=context or "No context", query=query)
-        logger.info("✅ BlueprintGenerator Agent prompt: %s", prompt)
+        prompt1 = PROMPT.format(context=context or "No context", query=query)
+        logger.info("✅ BlueprintGenerator Agent prompt: %s", prompt1)
         try:
             #resp = genai.generate_text(model="gemini-2.5-flash", input=prompt) if GEMINI_API_KEY else None
             # Configure the API key
-            genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+            #genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
             # Load the model
-            model = genai.GenerativeModel(CONFIG["llm_mapping"]["blueprint_agent"])
+            #model = genai.GenerativeModel(CONFIG["llm_mapping"]["blueprint_agent"])
             # Generate content from the model
-            resp = model.generate_content(prompt)
+            resp = client.models.generate_content(model="gemini-2.5-flash", prompt=prompt1)
             # Access the generated text
             #resp = response.text
             logger.info("✅ BlueprintGenerator Agent resp: %s", resp)

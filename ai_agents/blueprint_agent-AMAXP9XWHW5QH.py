@@ -1,5 +1,5 @@
 # agents/blueprint_agent.py
-import google.generativeai as genai
+import google.genai as genai
 import os, logging, json, yaml
 
 logger = logging.getLogger(__name__)

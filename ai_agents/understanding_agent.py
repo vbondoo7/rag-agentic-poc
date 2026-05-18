@@ -1,5 +1,5 @@
 # agents/understanding_agent.py
-import google.generativeai as genai
+import google.genai as genai
 import os, logging, yaml
 from ai_agents.sdk_tools import search_vector
 
@@ -9,8 +9,9 @@ with open("config.yaml", "r") as fh:
 
 logger = logging.getLogger(__name__)
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-if GEMINI_API_KEY:
-    genai.configure(api_key=GEMINI_API_KEY)
+client = genai.Client(api_key=GEMINI_API_KEY) if GEMINI_API_KEY else None
+#if GEMINI_API_KEY:
+ #   genai.configure(api_key=GEMINI_API_KEY)
 
 PROMPT = """
 You are an expert software architect. Use the context and relevant all files in the main repo and service specific folders to explain the module/service.
@@ -35,16 +36,16 @@ Return as plain text.
 
 class UnderstandingAgent:
     def analyze(self, query: str, context: str = "") -> str:
-        prompt = PROMPT.format(context=context or "No context", query=query)
-        logger.info("✅ Understanding Agent prompt: %s", prompt)
+        prompt1 = PROMPT.format(context=context or "No context", query=query)
+        logger.info("✅ Understanding Agent prompt: %s", prompt1)
         try:
             #resp = genai.generate_text(model="gemini-2.5-flash", input=prompt) if GEMINI_API_KEY else None
             # Configure the API key
-            genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+            #genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
             # Load the model
-            model = genai.GenerativeModel(CONFIG["llm_mapping"]["understanding_agent"])
+            #model = genai.GenerativeModel(CONFIG["llm_mapping"]["understanding_agent"])
             # Generate content from the model
-            resp = model.generate_content(prompt)
+            resp = client.models.generate_content(model="gemini-2.5-flash", prompt=prompt1)
             # Access the generated text
             #resp = response.text
             logger.info("✅ Understanding Agent resp: %s", resp)

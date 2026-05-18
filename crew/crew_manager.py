@@ -13,13 +13,14 @@ This is intentionally small and synchronous for Streamlit.
 
 from ai_agents import prompts
 from ai_agents.prompts import PROMPTS
-from google import generativeai as genai_stub  # placeholder if google package not present
-import google.generativeai as genai
+import google.genai as genai
 from logger import log
 import yaml
 import os
 
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
 CFG_PATH = "config.yaml"
+client = genai.Client(api_key=GEMINI_API_KEY) if GEMINI_API_KEY else None
 
 def load_config():
     import yaml
@@ -31,7 +32,8 @@ def ensure_genai_configured():
     if not GEMINI_API_KEY:
         log.warning("GEMINI_API_KEY not set in env (set it or in Streamlit secrets). Agents will error on LLM calls.")
         return False
-    genai.configure(api_key=GEMINI_API_KEY)
+    #genai.configure(api_key=GEMINI_API_KEY)
+    client = genai.Client(api_key=GEMINI_API_KEY) if GEMINI_API_KEY else None
     return True
 
 ensure_genai_configured()
@@ -51,7 +53,7 @@ class Agent:
         self.prompt_template = PROMPTS.get(name, PROMPTS.get("UnderstandingAgent"))
 
     def run(self, query, retrieved_context=""):
-        prompt = self.prompt_template.format(context=retrieved_context, query=query)
+        prompt1 = self.prompt_template.format(context=retrieved_context, query=query)
         try:
             # If no LLM key is configured, return a helpful fallback for local testing.
             if not (os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")):
@@ -60,8 +62,9 @@ class Agent:
                 snippet = (retrieved_context[:1000] + "...") if len(retrieved_context) > 1000 else retrieved_context
                 return f"[LLM disabled] Retrieved context (truncated):\n{snippet}"
 
-            model = genai.GenerativeModel(self.model)
-            resp = model.generate_content(prompt, temperature=self.temperature)
+            #model = genai.GenerativeModel(self.model)
+            #resp = model.generate_content(prompt, temperature=self.temperature)
+            resp = client.models.generate_content(model="gemini-2.5-flash", prompt=prompt1)
             return resp.text if hasattr(resp, "text") else str(resp)
         except Exception as e:
             log.error(f"LLM call failed for agent {self.name}: {e}")

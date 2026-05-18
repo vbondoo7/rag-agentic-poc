@@ -13,4 +13,4 @@ python -c "from ai_agents.agent_manager import run_agent; print(run_agent('Impac
 
 Notes:
 - Set `GEMINI_API_KEY` (or `GOOGLE_API_KEY`) in your environment to enable LLM calls.
-- The crew wrapper gracefully handles missing `google.generativeai` by requiring a handler; otherwise LLM calls will report as unavailable.
+- The crew wrapper gracefully handles missing `google.genai` by requiring a handler; otherwise LLM calls will report as unavailable.

@@ -9,7 +9,7 @@ from logs.logger import get_logger
 from db.chat_db import save_message
 from uuid import uuid4
 from typing import List
-import google.generativeai as genai
+import google.genai as genai
 
 logger = get_logger(__name__)
 

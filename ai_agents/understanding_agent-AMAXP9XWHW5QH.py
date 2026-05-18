@@ -1,5 +1,5 @@
 # agents/understanding_agent.py
-import google.generativeai as genai
+import google.genai as genai
 import os, logging, yaml
 from ai_agents.sdk_tools import search_vector
 

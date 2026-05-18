@@ -14,7 +14,7 @@ This is intentionally small and synchronous for Streamlit.
 from ai_agents import prompts
 from ai_agents.prompts import PROMPTS
 try:
-    import google.generativeai as genai
+    import google.genai as genai
 except Exception:
     genai = None
 from logger import log
@@ -34,7 +34,7 @@ def ensure_genai_configured():
         log.warning("GEMINI_API_KEY not set in env (set it or in Streamlit secrets). LLM calls may fail.")
         return False
     if genai is None:
-        log.warning("google.generativeai package not available; LLM calls disabled.")
+        log.warning("google.genai package not available; LLM calls disabled.")
         return False
     try:
         genai.configure(api_key=GEMINI_API_KEY)
@@ -50,7 +50,7 @@ class Agent:
         """Handler may be a callable or an object exposing .analyze/.generate methods.
 
         If `handler` is supplied, Agent.run will delegate to it. Otherwise Agent will
-        use the prompt templates + google.generativeai (if available).
+        use the prompt templates + google.genai (if available).
         """
         self.name = name
         self.tools = tools or {}

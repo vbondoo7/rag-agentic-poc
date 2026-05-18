@@ -1,5 +1,5 @@
 # agents/impact_agent.py
-import google.generativeai as genai
+import google.genai as genai
 import os, logging, json, yaml
 
 # Load config
@@ -8,8 +8,9 @@ with open("config.yaml", "r") as fh:
 
 logger = logging.getLogger(__name__)
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-if GEMINI_API_KEY:
-    genai.configure(api_key=GEMINI_API_KEY)
+client = genai.Client(api_key=GEMINI_API_KEY) if GEMINI_API_KEY else None
+#if GEMINI_API_KEY:
+ #   genai.configure(api_key=GEMINI_API_KEY)
 
 PROMPT = """
 You are a solution architect assistant. Given context and a change request, list impacted modules.
@@ -35,16 +36,16 @@ Output STRICT JSON array of objects:
 
 class ImpactAnalyzerAgent:
     def analyze(self, query: str, context: str = "") -> str:
-        prompt = PROMPT.format(context=context or "No context", query=query)
-        logger.info("✅ ImpactAnalyzer Agent prompt: %s", prompt)
+        prompt1 = PROMPT.format(context=context or "No context", query=query)
+        logger.info("✅ ImpactAnalyzer Agent prompt: %s", prompt1)
         try:
             #resp = genai.generate_text(model="gemini-2.5-flash", input=prompt) if GEMINI_API_KEY else None
             # Configure the API key
-            genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+            #genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
             # Load the model
-            model = genai.GenerativeModel(CONFIG["llm_mapping"]["impact_agent"])
+            #model = genai.GenerativeModel(CONFIG["llm_mapping"]["impact_agent"])
             # Generate content from the model
-            resp = model.generate_content(prompt)
+            resp = client.models.generate_content(model="gemini-2.5-flash", prompt=prompt1)
             # Access the generated text
             #resp = response.text
             logger.info("✅ ImpactAnalyzer Agent resp: %s", resp)

@@ -28,8 +28,8 @@ logs/
 *~
 
 # Environment variable / secret files
-#*.env
-#.env.*
+*.env
+.env.*
 .secrets/
 .secrets.toml
 .streamlit/secrets.toml

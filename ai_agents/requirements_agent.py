@@ -1,5 +1,5 @@
 # agents/requirements_agent.py
-import google.generativeai as genai
+import google.genai as genai
 import os
 import logging, yaml
 from ai_agents.sdk_tools import search_vector
@@ -10,8 +10,9 @@ with open("config.yaml", "r") as fh:
     
 logger = logging.getLogger(__name__)
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-if GEMINI_API_KEY:
-    genai.configure(api_key=GEMINI_API_KEY)
+client = genai.Client(api_key=GEMINI_API_KEY) if GEMINI_API_KEY else None
+#if GEMINI_API_KEY:
+ #   genai.configure(api_key=GEMINI_API_KEY)
 
 PROMPT = """
 You are a requirements intent detector and short analyzer. Given the user's request and supporting context (from code/docs), produce the intent classification and a 1-line summary.
@@ -28,16 +29,17 @@ Be strict JSON only.
 
 class RequirementsAnalyzer:
     def get_intent(self, query: str, context: str = "") -> dict:
-        prompt = PROMPT.format(query=query, context=context)
-        logger.info("✅ RequirementsAnalyzer Agent prompt: %s", prompt)
+        prompt1 = PROMPT.format(query=query, context=context)
+        logger.info("✅ RequirementsAnalyzer Agent prompt: %s", prompt1)
         try:
             #resp = genai.generate_text(model="gemini-2.5-flash", input=prompt) if GEMINI_API_KEY else None
             # Configure the API key
-            genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+            #genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
             # Load the model
-            model = genai.GenerativeModel(CONFIG["llm_mapping"]["requirement_agent"])
+            #model = genai.GenerativeModel(CONFIG["llm_mapping"]["requirement_agent"])
             # Generate content from the model
-            resp = model.generate_content(prompt)
+            #resp = client.models.generate_content(model, prompt)
+            resp = client.models.generate_content(model="gemini-2.5-flash", prompt=prompt1)
             # Access the generated text
             #resp = response.text
             logger.info("✅ RequirementsAnalyzer Agent resp: %s", resp)

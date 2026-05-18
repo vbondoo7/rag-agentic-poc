@@ -2,15 +2,21 @@
 import os
 import logging, yaml
 from datetime import datetime
-import google.generativeai as genai
+import google.genai as genai
 from dotenv import load_dotenv
+
+from ai_agents.requirements_agent import GEMINI_API_KEY
 load_dotenv()
 
 logger = logging.getLogger(__name__)
 # Load config
 with open("config.yaml", "r") as fh:
     CONFIG = yaml.safe_load(fh)
-    
+
+logger = logging.getLogger(__name__)
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+client = genai.Client(api_key=GEMINI_API_KEY) if GEMINI_API_KEY else None
+
 class DocGeneratorAgent:
     """
     Generates markdown/text documentation from codebase context.
@@ -22,11 +28,10 @@ class DocGeneratorAgent:
         os.makedirs(self.output_dir, exist_ok=True)
 
         # Configure Gemini
-        api_key = os.getenv("GOOGLE_API_KEY")
-        if not api_key:
-            raise ValueError("GOOGLE_API_KEY not found in environment variables.")
-        genai.configure(api_key=api_key)
-        self.model = genai.GenerativeModel(CONFIG["llm_mapping"]["doc_agent"])
+        GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+        client = genai.Client(api_key=GEMINI_API_KEY) if GEMINI_API_KEY else None
+        #genai.configure(api_key=api_key)
+        #self.model = genai.GenerativeModel(CONFIG["llm_mapping"]["doc_agent"])
 
     def generate(self, user_input: str, context: str) -> str:
         """
@@ -35,7 +40,7 @@ class DocGeneratorAgent:
         try:
             logger.info("🧠 Generating documentation for user query...")
 
-            prompt = f"""
+            prompt1 = f"""
 You are a senior solution architect and technical writer.
 Write a clean, structured markdown documentation based on:
 
@@ -53,8 +58,12 @@ Structure your output with sections:
 - Example / Usage
 - Recommendations
 """
-            logger.info("✅ DocGenerator Agent prompt: %s", prompt)
-            resp = self.model.generate_content(prompt)
+            logger.info("✅ DocGenerator Agent prompt: %s", prompt1)
+            #resp = self.model.generate_content(prompt)
+            #model = genai.GenerativeModel(CONFIG["llm_mapping"]["doc_agent"])
+            #resp = client.models.generate_content(model, prompt)
+            resp = client.models.generate_content(model="gemini-2.5-flash", prompt=prompt1)
+        
             logger.info("✅ DocGenerator Agent resp: %s", resp)
             text = resp.text if resp else "[]"
 
