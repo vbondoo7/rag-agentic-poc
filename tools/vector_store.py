@@ -17,15 +17,15 @@ class VectorStore:
 
         # Initialize PersistentClient (newer Chroma)
         try:
-            logger.info("🔄 Initializing Chroma PersistentClient at %s", self.persist_directory)
+            logger.info("Initializing Chroma PersistentClient at %s", self.persist_directory)
             self.client = chromadb.PersistentClient(path=self.persist_directory)
             # Default embedding function wrapper (we pass raw embeddings from sentence-transformers)
             self.embedding_fn = embedding_functions.DefaultEmbeddingFunction()
             # get_or_create_collection will create if missing
             self.collection = self.client.get_or_create_collection(name=self.collection_name, embedding_function=self.embedding_fn)
-            logger.info("✅ Chroma Initialized, collection: %s", self.collection_name)
+            logger.info("Chroma Initialized, collection: %s", self.collection_name)
         except Exception as e:
-            logger.exception("💥 Failed to initialize Chroma: %s", e)
+            logger.exception("Failed to initialize Chroma: %s", e)
             raise
 
     def add_documents(self, ids: List[str], documents: List[str], metadatas: List[Dict], embeddings: Optional[List[List[float]]] = None):
@@ -35,23 +35,23 @@ class VectorStore:
                 self.collection.add(ids=ids, documents=documents, metadatas=metadatas, embeddings=embeddings)
             else:
                 self.collection.add(ids=ids, documents=documents, metadatas=metadatas)
-            logger.info("✅ Added %d items to Chroma collection '%s'", len(ids), self.collection_name)
+            logger.info("Added %d items to Chroma collection '%s'", len(ids), self.collection_name)
         except Exception as e:
-            logger.exception("💥 Error adding docs to Chroma: %s", e)
+            logger.exception("Error adding docs to Chroma: %s", e)
             raise
 
     def query(self, query_texts: List[str], n_results: int = 5):
         try:
             res = self.collection.query(query_texts=query_texts, n_results=n_results)
-            logger.info("🔍 Chroma query for %d texts returned.", len(query_texts))
+            logger.info("Chroma query for %d texts returned.", len(query_texts))
             return res
         except Exception as e:
-            logger.exception("💥 Chroma query failed: %s", e)
+            logger.exception("Chroma query failed: %s", e)
             return {"ids": [], "documents": [], "metadatas": []}
 
     def persist(self):
         try:
             # PersistentClient persists automatically, but keep a hook
-            logger.info("💾 Chroma persistence OK (PersistentClient handles on-disk state).")
+            logger.info("Chroma persistence OK (PersistentClient handles on-disk state).")
         except Exception as e:
-            logger.exception("⚠️ Chroma persist failed: %s", e)
+            logger.exception("Chroma persist failed: %s", e)

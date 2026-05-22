@@ -59,4 +59,4 @@ cmd = [
     "-o", str(OUT_LIB),
 ] + TMP_OBJS
 subprocess.run(cmd, check=True)
-logging.info(f"✅ Done! Library created at: {OUT_LIB}")
+logging.info(f"Done! Library created at: {OUT_LIB}")

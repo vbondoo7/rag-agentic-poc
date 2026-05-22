@@ -37,7 +37,7 @@ Output STRICT JSON array of objects:
 class ImpactAnalyzerAgent:
     def analyze(self, query: str, context: str = "") -> str:
         prompt1 = PROMPT.format(context=context or "No context", query=query)
-        logger.info("✅ ImpactAnalyzer Agent prompt: %s", prompt1)
+        logger.debug("ImpactAnalyzer Agent prompt: %s", prompt1)
         try:
             #resp = genai.generate_text(model="gemini-2.5-flash", input=prompt) if GEMINI_API_KEY else None
             # Configure the API key
@@ -45,10 +45,10 @@ class ImpactAnalyzerAgent:
             # Load the model
             #model = genai.GenerativeModel(CONFIG["llm_mapping"]["impact_agent"])
             # Generate content from the model
-            resp = client.models.generate_content(model="gemini-2.5-flash", prompt=prompt1)
+            resp = client.models.generate_content(model="gemini-2.5-flash", contents=prompt1)
             # Access the generated text
             #resp = response.text
-            logger.info("✅ ImpactAnalyzer Agent resp: %s", resp)
+            logger.info("ImpactAnalyzer Agent resp: %s", resp)
             text = resp.text if resp else "[]"
         except Exception as e:
             logger.exception("Gemini error: %s", e)

@@ -19,6 +19,6 @@ os.environ["LDFLAGS"] = "-dynamiclib -undefined dynamic_lookup -fPIC"
 
 try:
     Language.build_library(lib_path, grammars)
-    print("✅ Successfully built:", lib_path)
+    print("Successfully built:", lib_path)
 except Exception as e:
-    print("❌ Build failed:", e)
+    print("Build failed:", e)

@@ -51,7 +51,7 @@ class BlueprintGeneratorAgent:
             # Load the model
             #model = genai.GenerativeModel(CONFIG["llm_mapping"]["blueprint_agent"])
             # Generate content from the model
-            resp = client.models.generate_content(model="gemini-2.5-flash", prompt=prompt1)
+            resp = client.models.generate_content(model="gemini-2.5-flash", contents=prompt1)
             # Access the generated text
             #resp = response.text
             logger.info("✅ BlueprintGenerator Agent resp: %s", resp)

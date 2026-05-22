@@ -24,10 +24,10 @@ with open("config.yaml", "r") as fh:
     CONFIG = yaml.safe_load(fh)
 
 # Set up OpenTelemetry tracer
-provider = TracerProvider()
-span_processor = OtelSpanProcessor()
-provider.add_span_processor(span_processor)
-trace.set_tracer_provider(provider)
+#provider = TracerProvider()
+#span_processor = OtelSpanProcessor()
+#provider.add_span_processor(span_processor)
+#trace.set_tracer_provider(provider)
 
 # Automatically instrument CrewAI and Google Cloud (Gemini) calls for tracing — adjust imports based on your actual instrumentation packages
 #from opentelemetry.instrumentation.crewai import CrewAIInstrumentor
@@ -65,6 +65,9 @@ with st.sidebar:
     st.header("Settings")
     repo_path = st.text_input("Repository / docs folder:", value=sample_codebase_dir)
     persist_dir = st.text_input("Chroma persist directory:", value=persist_dir)
+    exclude_dirs_default = "kustomize,istio-manifests,kubernetes-manifests"
+    exclude_dirs_str = st.text_input("Exclude subfolders (comma-separated):", value=exclude_dirs_default)
+    exclude_dirs = [d.strip() for d in exclude_dirs_str.split(",") if d.strip()]
     rebuild_index = st.button("Rebuild Vector Index (force)")
 
 # --- Build embeddings / vector DB if needed ---
@@ -74,7 +77,7 @@ if rebuild_index or not os.listdir(persist_dir):
     try:
         embedder = Embedder(model_name=CONFIG["app"].get("embed_model", "all-MiniLM-L6-v2"),
                             persist_dir=persist_dir)
-        embedder.embed_codebase(repo_path)
+        embedder.embed_codebase(repo_path, exclude_dirs=exclude_dirs)
         st.success("Vector index created/updated.")
         logger.info("Vector index built at %s", persist_dir)
     except Exception as e:
@@ -193,6 +196,7 @@ with center:
                     agent_name = "ArchitectAgent"
                     logger.exception("Agent call failed")
 
+            logger.info(f"Agent response length BEFORE DB: {len(agent_resp)}")
             # Save agent response in messages table and update chats summary
             try:
                 chat_db.add_message(chat_id, "agent", agent_resp) 
@@ -202,10 +206,14 @@ with center:
             # Update the summary fields in chats table
             chat_db.update_chat_response(chat_id, agent_name, agent_resp)
 
+            chat = chat_db.get_chat_by_id(chat_id)
+            logger.info(f"Agent response length FROM DB: {len(chat[3])}")
+             
             # show response
             st.success(f"Agent ({agent_name}) responded.")
             st.markdown("**Response:**")
-            st.code(agent_resp)
+            #st.code(agent_resp, unsafe_allow_html=True)
+            st.text(agent_resp)
 
             # clear input and refresh list
             st.session_state.input_text = ""

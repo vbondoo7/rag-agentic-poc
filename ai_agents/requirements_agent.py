@@ -30,7 +30,7 @@ Be strict JSON only.
 class RequirementsAnalyzer:
     def get_intent(self, query: str, context: str = "") -> dict:
         prompt1 = PROMPT.format(query=query, context=context)
-        logger.info("✅ RequirementsAnalyzer Agent prompt: %s", prompt1)
+        logger.debug("RequirementsAnalyzer Agent prompt: %s", prompt1)
         try:
             #resp = genai.generate_text(model="gemini-2.5-flash", input=prompt) if GEMINI_API_KEY else None
             # Configure the API key
@@ -39,10 +39,10 @@ class RequirementsAnalyzer:
             #model = genai.GenerativeModel(CONFIG["llm_mapping"]["requirement_agent"])
             # Generate content from the model
             #resp = client.models.generate_content(model, prompt)
-            resp = client.models.generate_content(model="gemini-2.5-flash", prompt=prompt1)
+            resp = client.models.generate_content(model="gemini-2.5-flash", contents=prompt1)
             # Access the generated text
             #resp = response.text
-            logger.info("✅ RequirementsAnalyzer Agent resp: %s", resp)
+            logger.info("RequirementsAnalyzer Agent resp: %s", resp)
             text = resp.text if resp else '{"intent":"generic","summary":"(simulated)"}'
         except Exception as e:
             logger.exception("Gemini error: %s", e)

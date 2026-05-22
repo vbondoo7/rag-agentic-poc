@@ -28,6 +28,6 @@ agents:
 
 # vector store / indexing
 vector:
-  chunk_size: 800
-  chunk_overlap: 120
+  chunk_size: 600
+  chunk_overlap: 100
   top_k: 6

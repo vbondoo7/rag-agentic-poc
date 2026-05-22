@@ -58,13 +58,13 @@ Structure your output with sections:
 - Example / Usage
 - Recommendations
 """
-            logger.info("✅ DocGenerator Agent prompt: %s", prompt1)
+            logger.debug("DocGenerator Agent final prompt: %s", prompt1)
             #resp = self.model.generate_content(prompt)
             #model = genai.GenerativeModel(CONFIG["llm_mapping"]["doc_agent"])
             #resp = client.models.generate_content(model, prompt)
-            resp = client.models.generate_content(model="gemini-2.5-flash", prompt=prompt1)
+            resp = client.models.generate_content(model="gemini-2.5-flash", contents=prompt1)
         
-            logger.info("✅ DocGenerator Agent resp: %s", resp)
+            logger.info("DocGenerator Agent resp: %s", resp)
             text = resp.text if resp else "[]"
 
             filename = f"doc_{datetime.now().strftime('%Y%m%d_%H%M%S')}.md"
@@ -74,9 +74,9 @@ Structure your output with sections:
                 f.write("# Generated Documentation\n\n")
                 f.write(text)
 
-            logger.info("✅ Documentation saved at: %s", filepath)
+            logger.info("Documentation saved at: %s", filepath)
             return f"Documentation generated successfully: {filepath}\n\n{text[:2000]}"
 
         except Exception as e:
-            logger.exception("❌ Doc generation failed: %s", e)
+            logger.exception("Doc generation failed: %s", e)
             return f"Documentation generation failed: {e}"

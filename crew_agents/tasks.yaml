@@ -1,0 +1,106 @@
+generate_blueprint_task:
+  description: |
+    Produce a detailed architectural blueprint for the requested feature/change. 
+    It may involve multiple components or services, so please be mindful and detailed.
+
+    Context:
+    {context}
+
+    Request:
+    {query}
+  expected_output: |
+    Return STRICT JSON exactly matching this structure, without markdown blocks:
+    {{
+      "title": "<short title>",
+      "originalRequirement": "<original user request>",
+      "components": [
+        {{ 
+          "name": "<component name>", 
+          "solution_description": "<description>", 
+          "interfaces": ["list of interfaces"], 
+          "notes": "<notes>", 
+          "estimated_effort": "XS|S|M|L|XL|XXL"
+        }}
+      ],
+      "patterns": ["list of patterns e.g. event-driven"],
+      "risks": ["list"],
+      "estimated_overall_effort": "XS|S|M|L|XL|XXL"
+    }}
+  agent: blueprint_generator 
+
+
+generate_documentation_task:
+  description: |
+    Write a clean, structured markdown documentation based on the following resources.
+
+    User request:
+    {user_input}
+
+    Context (from codebase or retrieved documents):
+    {context}
+  expected_output: |
+    A professional, well-formatted Markdown document containing exactly these sections:
+    - Overview
+    - Components or Modules
+    - APIs or Interfaces (if any)
+    - Dependencies / Integrations
+    - Example / Usage
+    - Recommendations
+  agent: documentation_generator
+
+
+assess_impact_task:
+  description: |
+    Given the codebase context and a change request, list all impacted modules.
+
+    Context:
+    {context}
+
+    Change request:
+    {query}
+  expected_output: |
+    Return a STRICT JSON array of objects detailing the architectural impact. 
+    Each object must track the module name, nature of changes, severity level, 
+    t-shirt size estimation, justification narrative, and source references.
+  agent: impact_assessor
+
+
+analyze_requirements_task:
+  description: |
+    Given the user's request and supporting context (from code/docs), produce the intent classification and a 1-line summary.
+
+    Request:
+    {query}
+
+    Context snippets:
+    {context}
+  expected_output: |
+    Return STRICT JSON exactly matching this structure, without markdown blocks:
+    {{ 
+      "intent": "impact|blueprint|understanding|documentation|generic", 
+      "summary": "<one-line summary>" 
+    }}
+  agent: requirements_analyzer
+
+
+explain_module_task:
+  description: |
+    Use the context and relevant files in the main repo and service-specific folders to explain the module or service.
+
+    Context:
+    {context}
+
+    User query:
+    {query}
+  expected_output: |
+    If the user has made a very generic ask about a particular service/module/component, return bullet points covering:
+    - System/component purpose
+    - Major relationships
+    - Key challenges
+    - Any gotchas
+    - Improvement areas (tech debt, architecture, code quality, performance, security etc. with details)
+
+    Otherwise, focus strictly on the user's specific query. DO NOT include the above aspects in your response; be highly specific while responding.
+
+    Return the final response as clean, plain text.
+  agent: understanding_agent

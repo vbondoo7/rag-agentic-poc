@@ -29,12 +29,12 @@ def run_agent_sync(user_input: str, persist_dir: str = "chroma_db"):
       - Persists chat result
     """
     try:
-        logger.info("🚀 Received input: %s", user_input)
+        logger.info("Received input: %s", user_input)
 
         # Step 1: Detect intent
         intent_info = req_analyzer.get_intent(user_input)
         intent = intent_info.get("intent", detect_intent(user_input))
-        logger.info("🧠 Detected intent: %s", intent)
+        logger.info("*** Detected intent: %s", intent)
 
         # Step 2: Retrieve RAG context
         context, rag = search_vector(user_input, top_k=5, persist_dir=persist_dir)
@@ -57,8 +57,8 @@ def run_agent_sync(user_input: str, persist_dir: str = "chroma_db"):
             if i < len(metadatas) and isinstance(metadatas[i], dict):
                 src = metadatas[i].get("source")
             context_pieces.append(f"Source: {src}\n{doc}")
-        context = "\n\n---\n\n".join(context_pieces)[:60000] if context_pieces else "No relevant documents found."
-        logger.info("📚 Context prepared with %d docs.", len(context_pieces))
+        context = "\n\n---\n\n".join(context_pieces)[:50000] if context_pieces else "No relevant documents found."
+        logger.info("Context prepared with %d docs.", len(context_pieces))
 
         # Step 3: Route to correct agent
         if intent == "impact":
@@ -83,11 +83,11 @@ def run_agent_sync(user_input: str, persist_dir: str = "chroma_db"):
             agent_name=agent_name,
             agent_response=out
         )
-        logger.info("💾 Chat saved: id=%s, agent=%s", chat_id, agent_name)
+        logger.info("Chat saved: id=%s, agent=%s", chat_id, agent_name)
 
         # Step 5: Return structured response
         return {"chat_id": chat_id, "agent": agent_name, "response": out}
 
     except Exception as e:
-        logger.exception("❌ Agent run failed: %s", e)
+        logger.exception("Agent run failed: %s", e)
         return {"chat_id": None, "agent": "error", "response": f"Agent error: {e}"}

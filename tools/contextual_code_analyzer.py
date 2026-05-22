@@ -31,7 +31,7 @@ def parse_file(filepath):
         # ✅ get_parser gives a ready-to-use parser instance
         parser = get_parser(language_name)
     except Exception as e:
-        logging.error(f"❌ Failed to initialize parser for {language_name}: {e}")
+        logging.error(f"Failed to initialize parser for {language_name}: {e}")
         raise
 
     with open(filepath, "r", encoding="utf-8") as f:
@@ -40,18 +40,18 @@ def parse_file(filepath):
     try:
         tree = parser.parse(source_code)
     except Exception as e:
-        logging.error(f"❌ Parsing error: {e}")
+        logging.error(f"Parsing error: {e}")
         raise
 
     root_node = tree.root_node
-    logging.info(f"✅ Parsed successfully. Root node: {root_node.type}")
+    logging.info(f"Parsed successfully. Root node: {root_node.type}")
 
     extract_summary(language_name, source_code, root_node)
 
 
 def extract_summary(language, source_code, root_node):
     """Minimal AST summary: lists top-level defs."""
-    logging.info("📜 Extracting structure summary...")
+    logging.info("Extracting structure summary...")
     cursor = root_node.walk()
     visited = set()
 
@@ -88,5 +88,5 @@ if __name__ == "__main__":
     try:
         parse_file(filepath)
     except Exception as e:
-        logging.error(f"💥 Failed to initialize or parse: {e}")
+        logging.error(f"Failed to initialize or parse: {e}")
         sys.exit(1)

@@ -37,7 +37,7 @@ Return as plain text.
 class UnderstandingAgent:
     def analyze(self, query: str, context: str = "") -> str:
         prompt1 = PROMPT.format(context=context or "No context", query=query)
-        logger.info("✅ Understanding Agent prompt: %s", prompt1)
+        logger.debug("Understanding Agent prompt: %s", prompt1)
         try:
             #resp = genai.generate_text(model="gemini-2.5-flash", input=prompt) if GEMINI_API_KEY else None
             # Configure the API key
@@ -45,10 +45,10 @@ class UnderstandingAgent:
             # Load the model
             #model = genai.GenerativeModel(CONFIG["llm_mapping"]["understanding_agent"])
             # Generate content from the model
-            resp = client.models.generate_content(model="gemini-2.5-flash", prompt=prompt1)
+            resp = client.models.generate_content(model="gemini-2.5-flash", contents=prompt1)
             # Access the generated text
             #resp = response.text
-            logger.info("✅ Understanding Agent resp: %s", resp)
+            logger.info("Understanding Agent resp: %s", resp)
             return resp.text if resp else "(simulated) Understanding result"
         except Exception as e:
             logger.exception("Gemini error: %s", e)

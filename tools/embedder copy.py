@@ -36,18 +36,13 @@ class Embedder:
         logger.info("Found %d files under %s", len(files), base_dir)
         return files
 
-    def embed_codebase(self, base_dir: str, include_exts: List[str] = None, exclude_dirs: List[str] = None):
-        import fnmatch
+    def embed_codebase(self, base_dir: str, include_exts: List[str] = None):
         include_exts = include_exts or ["*.py", "*.java", "*.go", "*.js", "*.ts", "*.md", "*.txt", "*.yaml", "*.yml", "*.json", "*.cs","*.cpp", "*.c", "*.*"]
-        exclude_dirs = set(exclude_dirs or ["kustomize", "istio-manifests", "kubernetes-manifests"])
         files = []
-        for root, dirs, file_list in os.walk(base_dir):
-            # Remove excluded dirs in-place
-            dirs[:] = [d for d in dirs if d not in exclude_dirs]
-            for file in file_list:
-                if any(fnmatch.fnmatch(file, ext) for ext in include_exts):
-                    files.append(os.path.join(root, file))
-        logger.info("Encoding %d files from %s (excluding: %s)", len(files), base_dir, ', '.join(exclude_dirs))
+        for p in include_exts:
+            files += glob.glob(os.path.join(base_dir, "**", p), recursive=True)
+        files = [f for f in files if os.path.isfile(f)]
+        logger.info("Encoding %d files from %s", len(files), base_dir)
 
         docs = []
         ids = []
