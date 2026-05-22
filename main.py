@@ -5,10 +5,10 @@ import streamlit as st
 import logging
 from datetime import datetime
 from dotenv import load_dotenv
-from langsmith.integrations.otel import OtelSpanProcessor
-from opentelemetry import trace
-from opentelemetry.sdk.trace import TracerProvider
-from opentelemetry.sdk.trace.export import SimpleSpanProcessor
+#from langsmith.integrations.otel import OtelSpanProcessor
+#from opentelemetry import trace
+#from opentelemetry.sdk.trace import TracerProvider
+#from opentelemetry.sdk.trace.export import SimpleSpanProcessor
 # your project modules (must exist as in your repo)
 from ai_agents.db import ChatDB
 from tools.embedder import Embedder

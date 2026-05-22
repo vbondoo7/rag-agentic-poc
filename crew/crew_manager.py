@@ -47,7 +47,7 @@ class Agent:
         agents_cfg = cfg.get("agents", {})
         ag_cfg = agents_cfg.get(name, {})
         # fallback to llm_mapping.default or a sensible hard-coded default
-        default_model = cfg.get("llm_mapping", {}).get("default", "gemini-2.5-flash")
+        default_model = cfg.get("llm_mapping", {}).get("default", "gemini-3.5-flash")
         self.model = ag_cfg.get("model", default_model)
         self.temperature = ag_cfg.get("temperature", cfg.get("llm_defaults", {}).get("temperature", 0.0))
         self.prompt_template = PROMPTS.get(name, PROMPTS.get("UnderstandingAgent"))
@@ -64,7 +64,7 @@ class Agent:
 
             #model = genai.GenerativeModel(self.model)
             #resp = model.generate_content(prompt, temperature=self.temperature)
-            resp = client.models.generate_content(model="gemini-2.5-flash", prompt=prompt1)
+            resp = client.models.generate_content(model="gemini-3.5-flash", prompt=prompt1)
             return resp.text if hasattr(resp, "text") else str(resp)
         except Exception as e:
             log.error(f"LLM call failed for agent {self.name}: {e}")

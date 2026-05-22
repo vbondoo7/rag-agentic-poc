@@ -62,7 +62,7 @@ Structure your output with sections:
             #resp = self.model.generate_content(prompt)
             #model = genai.GenerativeModel(CONFIG["llm_mapping"]["doc_agent"])
             #resp = client.models.generate_content(model, prompt)
-            resp = client.models.generate_content(model="gemini-2.5-flash", contents=prompt1)
+            resp = client.models.generate_content(model="gemini-3.5-flash", contents=prompt1)
         
             logger.info("DocGenerator Agent resp: %s", resp)
             text = resp.text if resp else "[]"

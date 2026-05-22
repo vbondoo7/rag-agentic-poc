@@ -31,7 +31,7 @@ class UnderstandingAgent:
         prompt1 = PROMPT.format(context=context or "No context", query=query)
         logger.info("✅ Understanding Agent prompt: %s", prompt1)
         try:
-            resp = client.models.generate_content(model="gemini-2.5-flash", prompt=prompt1)
+            resp = client.models.generate_content(model="gemini-3.5-flash", prompt=prompt1)
             logger.info("✅ Understanding Agent resp: %s", resp)
             return resp.text if resp else "(simulated) Understanding result"
         except Exception as e:

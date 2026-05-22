@@ -12,6 +12,7 @@ def setup_logging(level=logging.INFO):
     logging.getLogger("chromadb").setLevel(logging.WARNING)
     logging.getLogger("httpx").setLevel(logging.WARNING)
     logging.getLogger("urllib3").setLevel(logging.WARNING)
+    logging.getLogger("transformers").setLevel(logging.ERROR)
     return logging.getLogger(__name__)
 
 

@@ -7,23 +7,23 @@ app:
 
 llm_defaults:
   provider: "gemini"
-  model: "gemini-2.5-flash"
+  model: "gemini-3.5-flash"
   temperature: 0.2
   max_tokens: 1024
 
 # Per-agent mapping - change model or provider per agent if needed
 agents:
   ArchitectAgent:
-    model: "gemini-2.5-flash"
+    model: "gemini-3.5-flash"
     temperature: 0.2
   ImpactAgent:
-    model: "gemini-2.5-flash"
+    model: "gemini-3.5-flash"
     temperature: 0.2
   BlueprintAgent:
-    model: "gemini-2.5-flash"
+    model: "gemini-3.5-flash"
     temperature: 0.25
   UnderstandingAgent:
-    model: "gemini-2.5-flash"
+    model: "gemini-3.5-flash"
     temperature: 0.15
 
 # vector store / indexing
