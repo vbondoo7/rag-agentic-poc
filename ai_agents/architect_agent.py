@@ -7,6 +7,7 @@ from ai_agents.blueprint_agent import BlueprintGeneratorAgent
 from ai_agents.doc_generator_agent import DocGeneratorAgent
 from ai_agents.sdk_tools import search_vector, detect_intent
 from ai_agents.db import ChatDB
+from langsmith.run_helpers import traceable
 
 logger = logging.getLogger(__name__)
 
@@ -18,6 +19,9 @@ blueprint_agent = BlueprintGeneratorAgent()
 doc_agent = DocGeneratorAgent()
 db = ChatDB()
 
+@traceable(name="ArchitectAgent-Orchestrator")
+def run_agent_with_trace(user_input, persist_dir):
+    return run_agent_sync(user_input, persist_dir=persist_dir)
 
 def run_agent_sync(user_input: str, persist_dir: str = "chroma_db"):
     """
@@ -40,6 +44,8 @@ def run_agent_sync(user_input: str, persist_dir: str = "chroma_db"):
         context, rag = search_vector(user_input, top_k=5, persist_dir=persist_dir)
         docs = rag.get("documents", [[]])[0] if isinstance(rag.get("documents"), list) else []
         metadatas = rag.get("metadatas", [[]])[0] if isinstance(rag.get("metadatas"), list) else []
+        logger.info("****docs: %s", docs)
+        logger.info("*****metadatas: %s", metadatas)
 
         # Ensure metadatas is a list of dicts
         if isinstance(metadatas, dict):
@@ -59,6 +65,7 @@ def run_agent_sync(user_input: str, persist_dir: str = "chroma_db"):
             context_pieces.append(f"Source: {src}\n{doc}")
         context = "\n\n---\n\n".join(context_pieces)[:50000] if context_pieces else "No relevant documents found."
         logger.info("Context prepared with %d docs.", len(context_pieces))
+        logger.debug("****Prepared context: %s", context)
 
         # Step 3: Route to correct agent
         if intent == "impact":

@@ -70,7 +70,7 @@ class ChatDB:
             conn.commit()
             chat_id = cur.lastrowid
             conn.close()
-            logger.info("💬 Chat added — ID=%s | Agent=%s", chat_id, agent_name)
+            logger.info("Chat added — ID=%s | Agent=%s", chat_id, agent_name)
             return chat_id
         except Exception as e:
             logger.exception("DB insert failed: %s", e)

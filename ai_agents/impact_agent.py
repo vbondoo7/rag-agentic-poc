@@ -1,6 +1,7 @@
 # agents/impact_agent.py
 import google.genai as genai
 import os, logging, json, yaml
+from langsmith.run_helpers import traceable
 
 # Load config
 with open("config.yaml", "r") as fh:
@@ -35,6 +36,9 @@ Output STRICT JSON array of objects:
 """
 
 class ImpactAnalyzerAgent:
+    @traceable(
+    name="ImpactAnalyzerAgent",
+    metadata={"agent_type": "analysis", "model": "gemini-3.5-flash"})
     def analyze(self, query: str, context: str = "") -> str:
         prompt1 = PROMPT.format(context=context or "No context", query=query)
         logger.debug("ImpactAnalyzer Agent prompt: %s", prompt1)
@@ -45,7 +49,8 @@ class ImpactAnalyzerAgent:
             # Load the model
             #model = genai.GenerativeModel(CONFIG["llm_mapping"]["impact_agent"])
             # Generate content from the model
-            resp = client.models.generate_content(model="gemini-3.5-flash", contents=prompt1)
+            #resp = client.models.generate_content(model="gemini-3.5-flash", contents=prompt1)
+            resp = call_gemini(prompt1)
             # Access the generated text
             #resp = response.text
             logger.info("ImpactAnalyzer Agent resp: %s", resp)
@@ -66,3 +71,10 @@ class ImpactAnalyzerAgent:
                 "justification": "could not parse LLM output",
                 "sources": []
             }])
+
+@traceable(name="Gemini-Call")
+def call_gemini(prompt):
+    return client.models.generate_content(
+        model="gemini-3.5-flash",
+        contents=prompt
+    )

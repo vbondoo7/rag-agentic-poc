@@ -26,9 +26,9 @@ Structure your output with sections:
 - Recommendations
 """
         try:
-            logger.info("🧠 Generating documentation for user query...")
+            logger.info("Generating documentation for user query...")
             resp = client.models.generate_content(model="gemini-3.5-flash", prompt=prompt1)
-            logger.info("✅ DocGenerator Agent resp: %s", resp)
+            logger.info("Generating documentation for user query...")
             return resp.text if resp else "(no response)"
         except Exception as e:
             logger.exception("Gemini error: %s", e)

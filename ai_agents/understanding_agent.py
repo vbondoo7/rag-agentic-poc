@@ -2,6 +2,7 @@
 import google.genai as genai
 import os, logging, yaml
 from ai_agents.sdk_tools import search_vector
+from langsmith.run_helpers import traceable
 
 # Load config
 with open("config.yaml", "r") as fh:
@@ -35,6 +36,9 @@ Return as plain text.
 """
 
 class UnderstandingAgent:
+    @traceable(
+    name="UnderstandingAgent",
+    metadata={"agent_type": "analysis", "model": "gemini-3.5-flash"})
     def analyze(self, query: str, context: str = "") -> str:
         prompt1 = PROMPT.format(context=context or "No context", query=query)
         logger.debug("Understanding Agent prompt: %s", prompt1)
@@ -45,7 +49,7 @@ class UnderstandingAgent:
             # Load the model
             #model = genai.GenerativeModel(CONFIG["llm_mapping"]["understanding_agent"])
             # Generate content from the model
-            resp = client.models.generate_content(model="gemini-3.5-flash", contents=prompt1)
+            resp = call_gemini(prompt1)
             # Access the generated text
             #resp = response.text
             logger.info("Understanding Agent resp: %s", resp)
@@ -53,3 +57,11 @@ class UnderstandingAgent:
         except Exception as e:
             logger.exception("Gemini error: %s", e)
             return f"Error generating understanding: {e}"
+
+
+@traceable(name="Gemini-Call")
+def call_gemini(prompt):
+    return client.models.generate_content(
+        model="gemini-3.5-flash",
+        contents=prompt
+    )

@@ -5,20 +5,25 @@ import streamlit as st
 import logging
 from datetime import datetime
 from dotenv import load_dotenv
-#from langsmith.integrations.otel import OtelSpanProcessor
-#from opentelemetry import trace
-#from opentelemetry.sdk.trace import TracerProvider
-#from opentelemetry.sdk.trace.export import SimpleSpanProcessor
+from langsmith import Client
+from langsmith.run_helpers import traceable
 # your project modules (must exist as in your repo)
 from ai_agents.db import ChatDB
 from tools.embedder import Embedder
-from ai_agents.architect_agent import run_agent_sync  # agent must NOT write to DB
+from ai_agents.architect_agent import run_agent_with_trace  # agent must NOT write to DB
 from logger import setup_logging
+from langsmith.run_helpers import get_current_run_tree
+
+client = Client()
 
 load_dotenv()
 logger = setup_logging()  # your logger setup
 logger.info("Starting Agentic Architect AI (Streamlit UI)")
 
+run_tree = get_current_run_tree()
+if run_tree:
+    run_tree.tags = ["streamlit", "user_query"]
+    
 # --- LOAD CONFIG (keep your original approach) ---
 with open("config.yaml", "r") as fh:
     CONFIG = yaml.safe_load(fh)
@@ -181,7 +186,7 @@ with center:
             # Call agent (agent should not write DB itself)
             with st.spinner("Agent is analyzing (may call Gemini + RAG)..."):
                 try:
-                    agent_result = run_agent_sync(user_input, persist_dir=persist_dir)
+                    agent_result = run_agent_with_trace(user_input, persist_dir=persist_dir)
                     # agent_result expected to be a dict or string — standardize
                     if isinstance(agent_result, dict):
                         agent_resp = agent_result.get("response") or agent_result.get("agent_response") or str(agent_result)

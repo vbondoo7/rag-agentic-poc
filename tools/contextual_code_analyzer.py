@@ -28,7 +28,7 @@ def parse_file(filepath):
     logging.info(f"🔍 Detected language: {language_name}")
 
     try:
-        # ✅ get_parser gives a ready-to-use parser instance
+        # get_parser gives a ready-to-use parser instance
         parser = get_parser(language_name)
     except Exception as e:
         logging.error(f"Failed to initialize parser for {language_name}: {e}")

@@ -3,6 +3,7 @@ import google.genai as genai
 import os
 import logging, yaml
 from ai_agents.sdk_tools import search_vector
+from langsmith.run_helpers import traceable
 
 # Load config
 with open("config.yaml", "r") as fh:
@@ -28,6 +29,9 @@ Be strict JSON only.
 """
 
 class RequirementsAnalyzer:
+    @traceable(
+    name="RequirementsAnalyzer",
+    metadata={"agent_type": "analysis", "model": "gemini-3.5-flash"})
     def get_intent(self, query: str, context: str = "") -> dict:
         prompt1 = PROMPT.format(query=query, context=context)
         logger.debug("RequirementsAnalyzer Agent prompt: %s", prompt1)
@@ -39,7 +43,7 @@ class RequirementsAnalyzer:
             #model = genai.GenerativeModel(CONFIG["llm_mapping"]["requirement_agent"])
             # Generate content from the model
             #resp = client.models.generate_content(model, prompt)
-            resp = client.models.generate_content(model="gemini-3.5-flash", contents=prompt1)
+            resp = call_gemini(prompt1)
             # Access the generated text
             #resp = response.text
             logger.info("RequirementsAnalyzer Agent resp: %s", resp)
@@ -57,3 +61,11 @@ class RequirementsAnalyzer:
             if "blueprint" in query.lower(): intent = "blueprint"
             if "document" in query.lower(): intent = "documentation"
             return {"intent": intent, "summary": text}
+
+
+@traceable(name="Gemini-Call")
+def call_gemini(prompt):
+    return client.models.generate_content(
+        model="gemini-3.5-flash",
+        contents=prompt
+    )

@@ -1,6 +1,7 @@
 # agents/blueprint_agent.py
 import google.genai as genai
 import os, logging, json, yaml
+from langsmith.run_helpers import traceable
 
 logger = logging.getLogger(__name__)
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
@@ -41,9 +42,12 @@ Return STRICT JSON:
 """
 
 class BlueprintGeneratorAgent:
+    @traceable(
+    name="BlueprintGeneratorAgent",
+    metadata={"agent_type": "analysis", "model": "gemini-3.5-flash"})
     def generate(self, query: str, context: str = "") -> str:
         prompt1 = PROMPT.format(context=context or "No context", query=query)
-        logger.info("✅ BlueprintGenerator Agent prompt: %s", prompt1)
+        logger.info("BlueprintGenerator Agent prompt: %s", prompt1)
         try:
             #resp = genai.generate_text(model="gemini-3.5-flash", input=prompt) if GEMINI_API_KEY else None
             # Configure the API key
@@ -51,10 +55,10 @@ class BlueprintGeneratorAgent:
             # Load the model
             #model = genai.GenerativeModel(CONFIG["llm_mapping"]["blueprint_agent"])
             # Generate content from the model
-            resp = client.models.generate_content(model="gemini-3.5-flash", contents=prompt1)
+            resp = call_gemini(prompt1)
             # Access the generated text
             #resp = response.text
-            logger.info("✅ BlueprintGenerator Agent resp: %s", resp)
+            logger.info("BlueprintGenerator Agent resp: %s", resp)
             text = resp.text if resp else "{}"
         except Exception as e:
             logger.exception("Gemini error: %s", e)
@@ -71,3 +75,11 @@ class BlueprintGeneratorAgent:
                 #"risks": ["LLM output unparsable"],
                 #"estimated_effort": "<NONE>"
             #})
+
+
+@traceable(name="Gemini-Call")
+def call_gemini(prompt):
+    return client.models.generate_content(
+        model="gemini-3.5-flash",
+        contents=prompt
+    )

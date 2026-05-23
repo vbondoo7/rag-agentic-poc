@@ -30,10 +30,10 @@ Output STRICT JSON array of objects:
 class ImpactAnalyzerAgent:
     def analyze(self, query: str, context: str = "") -> str:
         prompt1 = PROMPT.format(context=context or "No context", query=query)
-        logger.info("✅ ImpactAnalyzer Agent prompt: %s", prompt1)
+        logger.info("ImpactAnalyzer Agent prompt: %s", prompt1)
         try:
             resp = client.models.generate_content(model="gemini-3.5-flash", prompt=prompt1)
-            logger.info("✅ ImpactAnalyzer Agent resp: %s", resp)
+            logger.info("ImpactAnalyzer Agent resp: %s", resp)
             text = resp.text if resp else "[]"
         except Exception as e:
             logger.exception("Gemini error: %s", e)

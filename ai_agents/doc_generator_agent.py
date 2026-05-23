@@ -4,7 +4,7 @@ import logging, yaml
 from datetime import datetime
 import google.genai as genai
 from dotenv import load_dotenv
-
+from langsmith.run_helpers import traceable
 from ai_agents.requirements_agent import GEMINI_API_KEY
 load_dotenv()
 
@@ -33,6 +33,9 @@ class DocGeneratorAgent:
         #genai.configure(api_key=api_key)
         #self.model = genai.GenerativeModel(CONFIG["llm_mapping"]["doc_agent"])
 
+    @traceable(
+    name="DocGeneratorAgent",
+    metadata={"agent_type": "analysis", "model": "gemini-3.5-flash"})
     def generate(self, user_input: str, context: str) -> str:
         """
         Generate markdown documentation file and return the short summary text.
@@ -62,8 +65,8 @@ Structure your output with sections:
             #resp = self.model.generate_content(prompt)
             #model = genai.GenerativeModel(CONFIG["llm_mapping"]["doc_agent"])
             #resp = client.models.generate_content(model, prompt)
-            resp = client.models.generate_content(model="gemini-3.5-flash", contents=prompt1)
-        
+            resp = call_gemini(prompt1)
+
             logger.info("DocGenerator Agent resp: %s", resp)
             text = resp.text if resp else "[]"
 
@@ -80,3 +83,10 @@ Structure your output with sections:
         except Exception as e:
             logger.exception("Doc generation failed: %s", e)
             return f"Documentation generation failed: {e}"
+
+@traceable(name="Gemini-Call")
+def call_gemini(prompt):
+    return client.models.generate_content(
+        model="gemini-3.5-flash",
+        contents=prompt
+    )
